@@ -1,0 +1,70 @@
+.title {
+  text-align: center;
+}
+.home {
+  color: blue;
+}
+.description {
+  color: rgb(121, 201, 36);
+}
+
+a {
+  text-decoration: none;
+}
+
+.form-box {
+  width: 70%;
+  padding: 5px;
+  margin: 0 auto;
+}
+
+ul {
+  padding: 10px;
+  border: 2px solid dimgrey;
+}
+
+li {
+  list-style: none;
+  margin: 5px;
+}
+
+li input,
+textarea {
+  font-weight: 700;
+  width: 100%;
+  border-radius: 5px;
+  padding: 5px;
+  margin-bottom: 5px;
+}
+
+.btn {
+  display: block;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: black;
+  color: white;
+  width: fit-content;
+
+  transition: 0.3s;
+}
+
+.btn:hover {
+  color: yellow;
+  font-size: 15px;
+}
+
+.btn-home {
+  padding: 3px;
+  margin: 0 auto;
+}
+
+.post-box {
+  border: 1px dashed dimgrey;
+  padding: 8px 15px;
+  margin: 13px;
+}
+
+.post-title {
+  text-transform: uppercase;
+  font-weight: 600;
+}

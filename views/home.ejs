@@ -1,0 +1,39 @@
+<%- include("./includes/head.ejs") %>
+
+    <h1 class="title home">
+        Home Page
+    </h1>
+    <h3 class="description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium tenetur neque debitis,
+        sed ea eaque dicta
+        id, illo accusantium voluptate obcaecati, laboriosam deserunt. Tenetur eos exercitationem explicabo laboriosam
+        fugit praesentium!
+    </h3>
+    <a href="./admin/create-post">
+        <button class="btn btn-postlink">Add a new post</button>
+    </a>
+
+    <hr>
+    <h1 class="title">Posts</h1>
+
+    <% if(postsArray.length===0) { %>
+        <div>
+            <h3 class="title">There is Nothing to see HERE!</h3>
+            <a href="/admin/create-post">
+                <button class="btn">Create a new post now</button></a>
+        </div>
+        <% } %>
+
+            <% for(let post of postsArray) { %>
+
+                <div class="post-box">
+                    <h3 class="post-title">
+                        <%= post.title %>
+                    </h3>
+                    <p class="post-des">
+                        <%= post.description %>
+                    </p>
+                </div>
+
+                <% } %>
+
+                    <%- include("./includes/foot.ejs") %>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Post Page</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <h1 class="title home">Add a new Post Here!</h1>
+    <div>
+        <a href="/">
+            <h4 class="btn btn-home">Go Back Home</h4>
+        </a>
+    </div>
+    <form action="/admin" method="post">
+        <div class="form-box">
+            <ul>
+                <li>
+
+                    <label for="title">Enter Title</label>
+                </li>
+                <li>
+                    <input type="text" id="title" name="title" required />
+                </li>
+                <li>
+                    <label for="description">Enter Description</label>
+                </li>
+                <li>
+                    <input type="text" id="description" name="description" required />
+                </li>
+                <li>
+                    <a href="#">
+                        <button type="submit" class="btn btn-add">
+                            Add Post
+                        </button>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </form>
+</body>
+
+</html>
