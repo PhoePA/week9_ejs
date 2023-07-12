@@ -4,17 +4,13 @@ const path = require("path");
 const router = express.Router();
 const { posts } = require("./admin");
 
-router.get("/", (req, res) => {
-  console.log(posts);
-  // res.sendFile(path.join(__dirname, "..", "views", "homePage.html"));
-  res.render("home", {
-    title: "Home Page",
-    postsArray: posts,
-  });
-});
+const postController = require("../controllers/posts");
 
-router.get("/post", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "views", "postPage.html"));
-});
+router.get("/", postController.renderHomePage);
+
+// router.get("/post", (req, res) => {
+//   res.sendFile(path.join(__dirname, "..", "views", "postPage.html"));
+// });
+router.get("/post/:postId", postController.getPost);
 
 module.exports = router;

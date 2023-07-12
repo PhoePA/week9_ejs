@@ -62,9 +62,31 @@ textarea {
   border: 1px dashed dimgrey;
   padding: 8px 15px;
   margin: 13px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .post-title {
   text-transform: uppercase;
   font-weight: 600;
+}
+
+.details h1 {
+  text-align: center;
+  margin: 10px;
+}
+
+img {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.des {
+  text-align: center;
+  margin: 10px;
+  text-align: justify;
+  text-indent: 10%;
+  
 }
