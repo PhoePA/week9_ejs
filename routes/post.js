@@ -2,11 +2,10 @@ const express = require("express");
 const path = require("path");
 
 const router = express.Router();
-const { posts } = require("./admin");
 
 const postController = require("../controllers/posts");
 
-router.get("/", postController.renderHomePage);
+router.get("/", postController.getPosts);
 
 // router.get("/post", (req, res) => {
 //   res.sendFile(path.join(__dirname, "..", "views", "postPage.html"));

@@ -1,34 +1,31 @@
 <%- include("./includes/head.ejs") %>
 
-    <h1 class="title home">Home Page</h1>
-    <h3 class="description">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium tenetur
-        neque debitis, sed ea eaque dicta id, illo accusantium voluptate obcaecati,
-        laboriosam deserunt. Tenetur eos exercitationem explicabo laboriosam fugit
-        praesentium!
-    </h3>
-    <a href="./admin/create-post">
-        <button class="btn btn-postlink">Add a new post</button>
-    </a>
+<h1 class="title home">Home Page</h1>
+<h3 class="description">
+  Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium tenetur
+  neque debitis, sed ea eaque dicta id, illo accusantium voluptate obcaecati,
+  laboriosam deserunt. Tenetur eos exercitationem explicabo laboriosam fugit
+  praesentium!
+</h3>
+<a href="./admin/create-post">
+  <button class="btn btn-postlink">Add a new post</button>
+</a>
 
-    <hr />
-    <h1 class="title">Posts</h1>
+<hr />
+<h1 class="title">Posts</h1>
 
-    <% if(postsArray.length===0) { %>
-        <div>
-            <h3 class="title">There is Nothing to see HERE!</h3>
-            <a href="/admin/create-post">
-                <button class="btn">Create a new post now</button></a>
-        </div>
-        <% } %>
-            <% for(let post of postsArray) { %>
+<% if(postsArr.length===0) { %>
+<div>
+  <h3 class="title">There is Nothing to see HERE!</h3>
+  <a href="/admin/create-post">
+    <button class="btn">Create a new post now</button></a
+  >
+</div>
+<% } %> <% for(let post of postsArr) { %>
 
-                <div class="post-box">
-                    <h3 class="post-title">
-                        <%= post.title %>
-                    </h3>
-                    <a class="btn" href="./post/<%= post.id %>">See More ...</a>
-                </div>
+<div class="post-box">
+  <h3 class="post-title"><%= post.title %></h3>
+  <a class="btn" href="./post/<%= post.id %>">See More ...</a>
+</div>
 
-                <% } %>
-                    <%- include("./includes/foot.ejs") %>
+<% } %> <%- include("./includes/foot.ejs") %>
