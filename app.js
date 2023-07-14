@@ -1,6 +1,12 @@
+//default modules
 const express = require("express");
 const path = require("path");
+
+//3rd party package
 const bodyParser = require("body-parser");
+
+//local import
+const sequelize = require("./utils/database.js");
 
 const app = express();
 
@@ -34,4 +40,10 @@ app.use("/admin", adminRoute);
 
 app.use(postRoute);
 
-app.listen(8080);
+sequelize
+  .sync()
+  .then((result) => {
+    console.log(result);
+    app.listen(8080);
+  })
+  .catch((err) => console.log(err));
