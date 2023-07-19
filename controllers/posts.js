@@ -133,7 +133,7 @@ exports.updatePost = (req, res) => {
 
   Post.findByPk(postID)
     .then((post) => {
-      // console.log(post);
+      console.log(post);
       (post.title = title),
         (post.description = description),
         (post.imgUrl = photo);
