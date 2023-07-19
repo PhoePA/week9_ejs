@@ -12,6 +12,8 @@ app.set("views", "views");
 const postRoute = require("./routes/post");
 const adminRoute = require("./routes/admin");
 
+const mongodbConnector = require("./utils/database");
+
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -34,4 +36,5 @@ app.use("/admin", adminRoute);
 
 app.use(postRoute);
 
+mongodbConnector();
 app.listen(8080);
