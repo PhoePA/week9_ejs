@@ -44,7 +44,6 @@ textarea {
   background-color: black;
   color: white;
   width: fit-content;
-
   transition: 0.3s;
 }
 
@@ -56,6 +55,12 @@ textarea {
 .btn-home {
   padding: 3px;
   margin: 0 auto;
+}
+
+.btn-edit {
+  width: fit-content;
+  display: flex;
+  margin: 10px;
 }
 
 .post-box {
@@ -88,5 +93,4 @@ img {
   margin: 10px;
   text-align: justify;
   text-indent: 10%;
-  
 }

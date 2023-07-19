@@ -1,6 +1,6 @@
 // const posts = [];
 
-const Post = require("../models/posts");
+const Post = require("../models/post");
 
 exports.createPost = (req, res) => {
   const { title, description, photo } = req.body;
@@ -24,14 +24,14 @@ exports.createPost = (req, res) => {
   //   .catch((err) => console.log(err));
 
   // create data into database with sequelize
-  Post.create({
+  req.user.createPost({
     title,
     description,
     imgUrl: photo,
   })
     .then((result) => {
       console.log(result);
-      console.log("new Pos created");
+      console.log("new Post created");
       res.redirect("/");
     })
     .catch((err) => console.log(err));
@@ -44,7 +44,9 @@ exports.renderCreatePage = (req, res) => {
 
 exports.getPosts = (req, res) => {
   // get data from Sequelize database
-  Post.findAll()
+  Post.findAll({
+    order: [[`createdAt`, `DESC`]],
+  })
     .then((posts) => {
       res.render("home", {
         title: "Home Page",
@@ -86,9 +88,62 @@ exports.getPost = (req, res) => {
 
   // get data from sequelize database
   // Post.findOne({ where: { id: postID } })
-    Post.findByPk(postID)
-      .then((post) => {
-        res.render("details", { title: "Post Details Page", post });
-      })
-      .catch((err) => console.log(err));
+  Post.findByPk(postID)
+    .then((post) => {
+      res.render("details", { title: "Post Details Page", post });
+    })
+    .catch((err) => console.log(err));
+};
+
+exports.deletePost = (req, res) => {
+  const postId = req.params.postId;
+
+  // console.log(postId);
+
+  // first method
+  Post.findByPk(postId)
+    .then((post) => {
+      if (!post) {
+        res.redirect("/");
+      }
+      return post.destroy();
+    })
+    .then((result) => {
+      console.log(result);
+      res.redirect("/");
+    })
+    .catch((err) => console.log(err));
+};
+
+exports.getOldPost = (req, res) => {
+  const postId = req.params.postId;
+  Post.findByPk(postId)
+    .then((post) => {
+      // console.log(post);
+      res.render("editPost", { title: `${post.title}`, post });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+exports.updatePost = (req, res) => {
+  const { title, description, photo, postID } = req.body;
+  // console.log(` Title value is ${title} and Description is ${description}.`);
+
+  Post.findByPk(postID)
+    .then((post) => {
+      // console.log(post);
+      (post.title = title),
+        (post.description = description),
+        (post.imgUrl = photo);
+      return post.save();
+    })
+    .then((result) => {
+      console.log(`Post id => ${postID} is updated successfully.`);
+      res.redirect("/");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };

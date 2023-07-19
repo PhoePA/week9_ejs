@@ -1,0 +1,41 @@
+<%- include("./includes/head") %>
+
+    <h1 class="title home">Edit Your Post</h1>
+    <div>
+        <a href="/">
+            <h4 class="btn btn-home">Go Back Home</h4>
+        </a>
+    </div>
+    <form action="/admin/post-edit" method="post">
+        <div class="form-box">
+            <ul>
+                <li>
+                    <label for="title" name="postID" value="<%=post.id%>"></label>
+                </li>
+                <li>
+                    <label for="title">Enter Title</label>
+                </li>
+                <li>
+                    <input type="text" id="title" name="title" required value="<%= post.title%>" />
+                </li>
+                <li>
+                    <label for="photo">Enter photo</label>
+                </li>
+                <li>
+                    <input type="text" id="photo" name="photo" value="<%= post.imgUrl%>" required />
+                </li>
+                <li>
+                    <label for="description">Enter Description</label>
+                </li>
+                <li>
+                    <textarea name="description" id="description" cols="30" rows="10">
+<%= post.description %></textarea>
+                </li>
+                <li>
+                    <button type="submit" class="btn btn-add">Update Post</button>
+                </li>
+            </ul>
+        </div>
+    </form>
+
+    <%- include("./includes/foot") %>

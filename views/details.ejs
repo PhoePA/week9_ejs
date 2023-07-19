@@ -8,6 +8,12 @@
   <p class="des"><%= post.description%></p>
   <img src="<%= post.imgUrl %>" alt="<%= post.title %>" />
   <hr />
+  <form action="/admin/post/<%= post.id%>" method="post">
+    <button type="submit" class="btn delete">Delete</button>
+  </form>
+  <a href="/admin/post-edit/<%= post.id%>">
+    <button class="btn-edit">Edit</button>
+  </a>
 </section>
 
 <%- include("./includes/foot.ejs")%>
