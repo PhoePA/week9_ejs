@@ -8,8 +8,15 @@
   <h1 class="post-title"><%= post.title %></h1>
   <p class="des"><%= post.description%></p>
   <img src="<%= post.imgUrl %>" alt="<%= post.title %>" />
-  <button class="btn">Delete</button>
-  <button class="btn">Edit</button>
+
+  <div class="buttons">
+    <a href="/admin/edit/<%= post._id %>">
+      <h4 class="btn">Edit</h4>
+    </a>
+    <form action="/admin/delete/<%= post._id %>" method="post">
+      <button type="submit" class="btn">Delete</button>
+    </form>
+  </div>
   <hr />
 </section>
 
