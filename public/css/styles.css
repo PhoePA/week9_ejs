@@ -45,6 +45,7 @@ textarea {
   color: white;
   width: fit-content;
   transition: 0.3s;
+  cursor: pointer;
 }
 
 .btn:hover {

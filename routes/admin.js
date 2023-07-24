@@ -1,6 +1,6 @@
 const { log } = require("console");
 const express = require("express");
-const path = require("path");
+
 const router = express.Router();
 
 const postController = require("../controllers/posts");

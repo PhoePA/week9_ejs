@@ -1,6 +1,6 @@
 const Post = require("../models/post");
 
-const posts = [];
+// const posts = [];
 
 exports.createPost = (req, res) => {
   const { title, description, photo } = req.body;
@@ -14,10 +14,21 @@ exports.createPost = (req, res) => {
   // console.log(posts);
   // res.redirect("/");
 
-  const post = new Post(title, description, photo);
+  //using mongoDB pure package
+  // const post = new Post(title, description, photo);
 
-  post
-    .create()
+  // post
+  //   .create()
+  //   .then((result) => {
+  //     console.log(result);
+  //     res.redirect("/");
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
+
+  //create data using mongoose
+  Post.create({ title, description, imgUrl: photo })
     .then((result) => {
       console.log(result);
       res.redirect("/");
@@ -36,7 +47,9 @@ exports.renderHomePage = (req, res) => {
   // console.log(posts);
   // res.sendFile(path.join(__dirname, "..", "views", "homePage.html"));
 
-  Post.getPosts()
+  // Post.getPosts() // read data from pure  mongodb
+  Post.find()
+  .sort({title:1}) // read data from mongosedb
     .then((posts) => {
       res.render("home", {
         title: "Home Page",
@@ -50,7 +63,8 @@ exports.renderHomePage = (req, res) => {
 
 exports.getPost = (req, res) => {
   const postId = req.params.postId;
-  Post.getPost(postId)
+  // Post.getPost(postId) // get data from pure mongodb
+  Post.findById(postId) // find data from mongoosedb
     .then((post) => {
       res.render("details", { title: post.title, post });
     })
@@ -64,7 +78,7 @@ exports.getPost = (req, res) => {
 
 exports.getEditPost = (req, res) => {
   const postId = req.params.postId;
-  Post.getPost(postId)
+  Post.findById(postId)
     .then((post) => {
       if (!post) {
         return res.redirect("/");
@@ -76,20 +90,35 @@ exports.getEditPost = (req, res) => {
 
 exports.updatePost = (req, res) => {
   const { postId, title, description, photo } = req.body;
-  const post = new Post(title, description, photo, postId);
 
-  post
-    .create()
+  Post.findById(postId)
+    .then((post) => {
+      post.title = title;
+      post.description = description;
+      post.imgUrl = photo;
+     return  post.save();
+    })
     .then((result) => {
       console.log("Post updated");
       res.redirect("/");
     })
     .catch((err) => console.log(err));
+
+
+  // const post = new Post(title, description, photo, postId);
+
+  // post
+  //   .create()
+  //   .then((result) => {
+  //     console.log("Post updated");
+  //     res.redirect("/");
+  //   })
+  //   .catch((err) => console.log(err));
 };
 
 exports.deletePost = (req, res) => {
   const { postId } = req.params;
-  Post.deletePostById(postId)
+  Post.findByIdAndRemove(postId)
     .then(() => {
       console.log("Post deleted Successfully!");
       res.redirect("/");
