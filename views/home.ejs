@@ -24,7 +24,10 @@
 <% } %> <% for(let post of postsArray) { %>
 
 <div class="post-box">
-  <h3 class="post-title"><%= post.title %></h3>
+  <div>
+    <h3 class="post-title"><%= post.title %></h3>
+    <p>Posted By <%= post.userId.username %></p>
+  </div>
   <a class="btn" href="./post/<%= post._id %>">See More ...</a>
 </div>
 

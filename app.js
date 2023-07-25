@@ -13,12 +13,23 @@ app.set("views", "views");
 const postRoute = require("./routes/post");
 const adminRoute = require("./routes/admin");
 
+const User = require("./models/user");
+
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use("/post", (req, res, next) => {
-  console.log("I am middleware for post");
-  next();
+// app.use("/post", (req, res, next) => {
+//   console.log("I am middleware for post");
+//   next();
+// });
+
+app.use("/", (req, res, next) => {
+  User.findById("64bf41719de8bf3c5f01de02")
+    .then((user) => {
+      req.user = user;
+      next();
+    })
+    .catch((err) => console.log(err));
 });
 
 app.use("/admin", adminRoute);
@@ -27,8 +38,24 @@ app.use(postRoute);
 
 mongoose
   .connect(process.env.MONGODB_URL)
-  .then(() => {app.listen(8080);
-  console.log("Connected to MongoDB Database")})
+  .then((result) => {
+    app.listen(8080);
+    console.log("Connected to MongoDB Database");
+
+    return User.findOne().then((user) => {
+      if (!user) {
+        User.create({
+          username: "Coder",
+          email: "codehub@gmail.com",
+          password: "123asd",
+        });
+      }
+      return user;
+    });
+  })
+  .then((result) => {
+    console.log(result);
+  })
   .catch((err) => console.log(err));
 
 // app.listen(8080);

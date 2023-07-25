@@ -28,7 +28,7 @@ exports.createPost = (req, res) => {
   //   });
 
   //create data using mongoose
-  Post.create({ title, description, imgUrl: photo })
+  Post.create({ title, description, imgUrl: photo, userId: req.user })
     .then((result) => {
       console.log(result);
       res.redirect("/");
@@ -48,9 +48,11 @@ exports.renderHomePage = (req, res) => {
   // res.sendFile(path.join(__dirname, "..", "views", "homePage.html"));
 
   // Post.getPosts() // read data from pure  mongodb
-  Post.find()
-  .sort({title:1}) // read data from mongosedb
+  Post.find().select("title")
+    .populate("userId", "username")
+    .sort({ title: -1 }) // read data from mongosedb and sort A-Z
     .then((posts) => {
+      console.log(posts);
       res.render("home", {
         title: "Home Page",
         postsArray: posts,
@@ -96,14 +98,13 @@ exports.updatePost = (req, res) => {
       post.title = title;
       post.description = description;
       post.imgUrl = photo;
-     return  post.save();
+      return post.save();
     })
     .then((result) => {
       console.log("Post updated");
       res.redirect("/");
     })
     .catch((err) => console.log(err));
-
 
   // const post = new Post(title, description, photo, postId);
 
