@@ -47,15 +47,20 @@ exports.renderHomePage = (req, res) => {
   // console.log(posts);
   // res.sendFile(path.join(__dirname, "..", "views", "homePage.html"));
 
+  //cookie
+  const cookie = req.get("Cookie").split("=")[1].trim()==="true";
+  // console.log(cookie);
+
   // Post.getPosts() // read data from pure  mongodb
-  Post.find().select("title")
+  Post.find()
+    .select("title")
     .populate("userId", "username")
     .sort({ title: -1 }) // read data from mongosedb and sort A-Z
     .then((posts) => {
       console.log(posts);
       res.render("home", {
         title: "Home Page",
-        postsArray: posts,
+        postsArray: posts,isLogin : cookie
       });
     })
     .catch((err) => {

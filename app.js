@@ -10,8 +10,11 @@ app.set("view engine", "ejs");
 // to set file path of the working file
 app.set("views", "views");
 
-const postRoute = require("./routes/post");
-const adminRoute = require("./routes/admin");
+const postRoutes = require("./routes/post");
+const adminRoutes = require("./routes/admin");
+
+//cookie lesson
+const authRoutes = require("./routes/auth");
 
 const User = require("./models/user");
 
@@ -32,9 +35,12 @@ app.use("/", (req, res, next) => {
     .catch((err) => console.log(err));
 });
 
-app.use("/admin", adminRoute);
+app.use("/admin", adminRoutes);
 
-app.use(postRoute);
+app.use(postRoutes);
+
+// cookie
+app.use(authRoutes);
 
 mongoose
   .connect(process.env.MONGODB_URL)

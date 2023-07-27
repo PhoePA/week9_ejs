@@ -1,0 +1,39 @@
+<%- include("../includes/head") %>
+
+<h1 class="title home">Add a new Account Here!</h1>
+<div>
+  <a href="/">
+    <h4 class="btn btn-home">Go Back Home</h4>
+  </a>
+</div>
+<form action="/login" method="post">
+  <div class="form-box">
+    <ul>
+      <li>
+        <label for="title">Enter UserName</label>
+      </li>
+      <li>
+        <input type="text" id="title" name="title"  />
+      </li>
+      <li>
+        <label for="email">Enter Email</label>
+      </li>
+      <li>
+        <input type="email" id="email" name="email"  />
+      </li> 
+      <li>
+        <label for="password">Enter Password</label>
+      </li>
+      <li>
+        <input type="password" id="password" name="password"  />
+      </li>     
+      <li>
+        <a href="#">
+          <button type="submit" class="btn btn-add">Create Account</button>
+        </a>
+      </li>
+    </ul>
+  </div>
+</form>
+
+<%- include("../includes/foot") %>

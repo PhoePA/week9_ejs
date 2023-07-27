@@ -7,10 +7,16 @@
   laboriosam deserunt. Tenetur eos exercitationem explicabo laboriosam fugit
   praesentium!
 </h3>
+
+<% if(isLogin){ %>
 <a href="./admin/create-post">
   <button class="btn btn-postlink">Add a new post</button>
 </a>
-
+<%} else {%>
+<a href="login">
+  <button class="btn btn-postlink">Add a new Account</button>
+</a>
+<%}%>
 <hr />
 <h1 class="title">Posts</h1>
 
