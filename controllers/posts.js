@@ -48,7 +48,7 @@ exports.renderHomePage = (req, res) => {
   // res.sendFile(path.join(__dirname, "..", "views", "homePage.html"));
 
   //cookie
-  const cookie = req.get("Cookie").split("=")[1].trim()==="true";
+  // const cookie = req.get("Cookie").split("=")[1].trim()==="true";
   // console.log(cookie);
 
   // Post.getPosts() // read data from pure  mongodb
@@ -60,7 +60,7 @@ exports.renderHomePage = (req, res) => {
       console.log(posts);
       res.render("home", {
         title: "Home Page",
-        postsArray: posts,isLogin : cookie
+        postsArray: posts, isLogin: req.session.isLogin ? true : false,
       });
     })
     .catch((err) => {

@@ -1,8 +1,13 @@
+// packages
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv").config();
+const session = require("express-session");
+const mongoStore = require("connect-mongodb-session")(session);
+
+// server
 const app = express();
 
 // to detect extension of files
@@ -10,17 +15,32 @@ app.set("view engine", "ejs");
 // to set file path of the working file
 app.set("views", "views");
 
+// routes
 const postRoutes = require("./routes/post");
 const adminRoutes = require("./routes/admin");
-
 //cookie lesson
 const authRoutes = require("./routes/auth");
 
+// model
 const User = require("./models/user");
+
+const store = new mongoStore({
+  uri: process.env.MONGODB_URI,
+  collection: "sessions",
+});
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(
+  session({
+    secret: process.env.SESSION_KEY,
+    resave: false,
+    saveUninitialized: false,
+    store,
+  })
+);
 
+//custom middlewares
 // app.use("/post", (req, res, next) => {
 //   console.log("I am middleware for post");
 //   next();
@@ -38,10 +58,10 @@ app.use("/", (req, res, next) => {
 app.use("/admin", adminRoutes);
 
 app.use(postRoutes);
-
 // cookie
 app.use(authRoutes);
 
+// connect database
 mongoose
   .connect(process.env.MONGODB_URL)
   .then((result) => {
