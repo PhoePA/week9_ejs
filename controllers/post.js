@@ -57,7 +57,7 @@ exports.renderHomePage = (req, res) => {
     .populate("userId", "username")
     .sort({ title: -1 }) // read data from mongosedb and sort A-Z
     .then((posts) => {
-      console.log(posts);
+      // console.log(posts);
       res.render("home", {
         title: "Home Page",
         postsArray: posts, isLogin: req.session.isLogin ? true : false,

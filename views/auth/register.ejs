@@ -1,35 +1,35 @@
 <%- include("../includes/head") %>
 
-<h1 class="title home">Log in to your account!</h1>
+<h1 class="title home">Register a new Account Here!</h1>
 <div>
   <a href="/">
     <h4 class="btn btn-home">Go Back Home</h4>
   </a>
 </div>
-<form action="/login" method="post">
+<form action="/register" method="post">
   <div class="form-box">
     <ul>
       <li>
-        <label for="title">Enter Username</label>
+        <label for="username">Enter Username</label>
       </li>
       <li>
-        <input type="text" id="title" name="title"  />
+        <input type="text" id="name" name="username"  />
       </li>
       <li>
-        <label for="email">Enter Email</label>
+        <label for="email">Enter a New Email</label>
       </li>
       <li>
         <input type="email" id="email" name="email"  />
       </li> 
       <li>
-        <label for="password">Enter Password</label>
+        <label for="password">Enter a New Password</label>
       </li>
       <li>
         <input type="password" id="password" name="password"  />
       </li>     
       <li>
         <a href="#">
-          <button type="submit" class="btn btn-add">Log in</button>
+          <button type="submit" class="btn btn-add">Create an Account</button>
         </a>
       </li>
     </ul>

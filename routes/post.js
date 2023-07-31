@@ -4,7 +4,7 @@ const path = require("path");
 const router = express.Router();
 const { posts } = require("./admin");
 
-const postController = require("../controllers/posts");
+const postController = require("../controllers/post");
 
 router.get("/", postController.renderHomePage);
 

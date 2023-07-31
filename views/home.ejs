@@ -16,8 +16,11 @@
   <button class="btn" type="submit">Log Out</button>
 </form>
 <%} else {%>
-<a href="login">
-  <button class="btn btn-postlink">Add a new Account</button>
+<a href="/register">
+  <button class="btn btn-postlink">Create a new Account</button>
+</a>
+<a href="/login">
+  <button class="btn btn-postlink">Login to existing Account</button>
 </a>
 <%}%>
 <hr />
@@ -35,7 +38,6 @@
 <div class="post-box">
   <div>
     <h3 class="post-title"><%= post.title %></h3>
-    <p>Posted By <%= post.userId.username %></p>
   </div>
   <a class="btn" href="./post/<%= post._id %>">See More ...</a>
 </div>
