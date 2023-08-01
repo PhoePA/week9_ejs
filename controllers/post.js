@@ -54,13 +54,13 @@ exports.renderHomePage = (req, res) => {
   // Post.getPosts() // read data from pure  mongodb
   Post.find()
     .select("title")
-    .populate("userId", "username")
+    .populate("userId", "email")
     .sort({ title: -1 }) // read data from mongosedb and sort A-Z
     .then((posts) => {
-      // console.log(posts);
+      console.log(posts);
       res.render("home", {
         title: "Home Page",
-        postsArray: posts, isLogin: req.session.isLogin ? true : false,
+        postsArray: posts,
       });
     })
     .catch((err) => {

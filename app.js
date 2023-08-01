@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv").config();
 const session = require("express-session");
 const mongoStore = require("connect-mongodb-session")(session);
-
+const csrf = require("csurf");
 // server
 const app = express();
 
@@ -24,10 +24,14 @@ const authRoutes = require("./routes/auth");
 // model
 const User = require("./models/user");
 
+const { isLogin } = require("./middleware/isLogin");
+
 const store = new mongoStore({
   uri: process.env.MONGODB_URI,
   collection: "sessions",
 });
+
+const csrfProtect = csrf();
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -46,16 +50,36 @@ app.use(
 //   next();
 // });
 
-// app.use("/", (req, res, next) => {
-//   User.findById("64bf41719de8bf3c5f01de02")
-//     .then((user) => {
-//       req.user = user;
-//       next();
-//     })
-//     .catch((err) => console.log(err));
-// });
+// token for security at form data
+app.use(csrfProtect);
 
-app.use("/admin", adminRoutes);
+app.use("/", (req, res, next) => {
+  // checking login? and logined userinfo
+  // console.log(req.session.isLogin);
+  // console.log(req.session.userInfo._id);
+
+  if (req.session.isLogin === undefined) {
+    return next();
+  }
+
+  User.findById(req.session.userInfo._id)
+    .select("_id email")
+    .then((user) => {
+      req.user = user;
+      console.log(req.user);
+      next();
+    })
+    .catch((err) => console.log(err));
+});
+
+//to send csrf token for rendering every page
+app.use((req, res, next) => {
+  res.locals.isLogin = req.session.isLogin ? true : false;
+  res.locals.csrfToken = req.csrfToken();
+  next();
+});
+
+app.use("/admin", isLogin, adminRoutes);
 
 app.use(postRoutes);
 // cookie

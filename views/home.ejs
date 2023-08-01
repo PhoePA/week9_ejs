@@ -13,6 +13,7 @@
   <button class="btn btn-postlink">Add a new post</button>
 </a>
 <form action="/logout" method="post">
+  <input hidden value="<%= csrfToken %>" name="_csrf" />
   <button class="btn" type="submit">Log Out</button>
 </form>
 <%} else {%>
@@ -38,6 +39,7 @@
 <div class="post-box">
   <div>
     <h3 class="post-title"><%= post.title %></h3>
+    <h3 class="post-title">Posted by => <%= post.userId.email %></h3>
   </div>
   <a class="btn" href="./post/<%= post._id %>">See More ...</a>
 </div>

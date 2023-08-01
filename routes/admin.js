@@ -1,10 +1,13 @@
-const { log } = require("console");
 const express = require("express");
+const { log } = require("console");
 
 const router = express.Router();
 
 const postController = require("../controllers/post");
 
+
+
+// admin/create-post
 router.get("/create-post", postController.renderCreatePage);
 
 router.post("/", postController.createPost);
