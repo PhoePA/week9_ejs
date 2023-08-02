@@ -1,9 +1,25 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
 
+const nodemailer = require("nodemailer");
+const dotenv = require("dotenv").config();
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.SENDER_MAIL,
+    pass: process.env.MAIL_PASSWORD,
+  },
+});
 //render register page
 exports.getRegisterPage = (req, res) => {
-  res.render("auth/register", { title: "Register" });
+  let message = req.flash("error");
+  if (message.length > 0) {
+    message = message[0];
+  } else {
+    message = null;
+  }
+  res.render("auth/register", { title: "Register", errorMsg: message });
 };
 
 // handle register
@@ -13,6 +29,7 @@ exports.registerAccount = (req, res) => {
   User.findOne({ email })
     .then((user) => {
       if (user) {
+        req.flash("error", "Email is already registered. Please use another!");
         return res.redirect("/register");
       }
       return bcrypt
@@ -26,6 +43,17 @@ exports.registerAccount = (req, res) => {
         })
         .then(() => {
           res.redirect("/login");
+          transporter.sendMail(
+            {
+              from: process.env.SENDER_MAIL,
+              to: email,
+              subject: "Registered Successfully",
+              html: "<h1>Registered Successfully.</h1><p>Create an account using this email address in Blog.io.</p>",
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
         });
     })
     .catch((err) => console.log(err));
@@ -33,7 +61,13 @@ exports.registerAccount = (req, res) => {
 
 // render log in page
 exports.getLoginPage = (req, res) => {
-  res.render("auth/login", { title: "Login Page" });
+  let message = req.flash("error");
+  if (message.length > 0) {
+    message = message[0];
+  } else {
+    message = null;
+  }
+  res.render("auth/login", { title: "Login Page", errorMsg: message });
 };
 
 // handle login
@@ -43,6 +77,7 @@ exports.postLoginData = (req, res) => {
   User.findOne({ email })
     .then((user) => {
       if (!user) {
+        req.flash("error", "Check your information and Try Again!");
         return res.redirect("/login");
       }
       bcrypt

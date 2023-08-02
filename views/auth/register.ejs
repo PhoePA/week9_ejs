@@ -7,27 +7,32 @@
   </a>
 </div>
 <form action="/register" method="post">
-   <input hidden name="_csrf" value="<%= csrfToken %>">
+  <input hidden name="_csrf" value="<%= csrfToken %>" />
   <div class="form-box">
     <ul>
+      <% if(errorMsg){%>
+      <li>
+        <p class="errMsg warn"><%=errorMsg%></p>
+      </li>
+      <%}%>
       <li>
         <label for="username">Enter Username</label>
       </li>
       <li>
-        <input type="text" id="name" name="username"  />
+        <input type="text" id="name" name="username" />
       </li>
       <li>
         <label for="email">Enter a New Email</label>
       </li>
       <li>
-        <input type="email" id="email" name="email"  />
-      </li> 
+        <input type="email" id="email" name="email" />
+      </li>
       <li>
         <label for="password">Enter a New Password</label>
       </li>
       <li>
-        <input type="password" id="password" name="password"  />
-      </li>     
+        <input type="password" id="password" name="password" />
+      </li>
       <li>
         <a href="#">
           <button type="submit" class="btn btn-add">Create an Account</button>

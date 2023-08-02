@@ -95,3 +95,20 @@ img {
   text-align: justify;
   text-indent: 10%;
 }
+
+.errMsg {
+  text-align: center;
+  color: red;
+  font-weight: 700;
+  font-size: 20px;
+  background-color: #f2f7f7;
+  padding: 8px;
+  border-radius: 8px;
+  width: fit-content;
+  margin: 5px auto;
+}
+
+.warn{
+  background-color: #303030;
+  color: #e0c40b;
+}

@@ -7,6 +7,9 @@ const dotenv = require("dotenv").config();
 const session = require("express-session");
 const mongoStore = require("connect-mongodb-session")(session);
 const csrf = require("csurf");
+const flash = require("connect-flash")
+
+
 // server
 const app = express();
 
@@ -33,6 +36,8 @@ const store = new mongoStore({
 
 const csrfProtect = csrf();
 
+
+//middleware
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(
@@ -52,6 +57,7 @@ app.use(
 
 // token for security at form data
 app.use(csrfProtect);
+app.use(flash())
 
 app.use("/", (req, res, next) => {
   // checking login? and logined userinfo

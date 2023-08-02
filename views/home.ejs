@@ -9,20 +9,28 @@
 </h3>
 
 <% if(isLogin){ %>
-<a href="./admin/create-post">
-  <button class="btn btn-postlink">Add a new post</button>
-</a>
-<form action="/logout" method="post">
-  <input hidden value="<%= csrfToken %>" name="_csrf" />
-  <button class="btn" type="submit">Log Out</button>
-</form>
+<div class="buttons">
+  <div>
+    <a href="./admin/create-post">
+      <button class="btn btn-postlink">Add a new post</button>
+    </a>
+  </div>
+  <div>
+    <form action="/logout" method="post">
+      <input hidden value="<%= csrfToken %>" name="_csrf" />
+      <button class="btn" type="submit">Log Out</button>
+    </form>
+  </div>
+</div>
 <%} else {%>
-<a href="/register">
-  <button class="btn btn-postlink">Create a new Account</button>
-</a>
-<a href="/login">
-  <button class="btn btn-postlink">Login to existing Account</button>
-</a>
+<div class="buttons">
+  <a href="/register">
+    <button class="btn btn-postlink">Create a new Account</button>
+  </a>
+  <a href="/login">
+    <button class="btn btn-postlink">Login to existing Account</button>
+  </a>
+</div>
 <%}%>
 <hr />
 <h1 class="title">Posts</h1>
