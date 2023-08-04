@@ -108,7 +108,21 @@ img {
   margin: 5px auto;
 }
 
-.warn{
+.warn {
   background-color: #303030;
   color: #e0c40b;
+}
+
+.feedback {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.feedbtn {
+  display: flex;
+  margin: 10px auto;
+  padding: 10px;
+  justify-content: ;
 }

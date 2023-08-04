@@ -18,4 +18,20 @@ router.post("/login", authController.postLoginData);
 // handle logout page
 router.post("/logout", authController.logOut);
 
+// render reset password page
+router.get("/reset-password", authController.getResetPage);
+
+// render feedback page
+router.get("/feedback", authController.getFeedbackPage);
+
+// send reset email
+router.post("/reset", authController.resetLinkSend);
+
+// render new password
+router.get("/reset-password/:token", authController.getNewPasswordPage);
+
+
+// handle new password 
+router.post("/change-new-password", authController.changeNewPassword);
+
 module.exports = router;

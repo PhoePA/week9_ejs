@@ -35,14 +35,15 @@
 <hr />
 <h1 class="title">Posts</h1>
 
-<% if(postsArray.length===0) { %>
+<% if(postsArray.length===0 && isLogin) { %>
 <div>
   <h3 class="title">There is Nothing to see HERE!</h3>
   <a href="/admin/create-post">
     <button class="btn">Create a new post now</button></a
   >
 </div>
-<% } %> <% for(let post of postsArray) { %>
+<% } %> 
+<% for(let post of postsArray) { %>
 
 <div class="post-box">
   <div>

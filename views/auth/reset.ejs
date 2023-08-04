@@ -1,0 +1,31 @@
+<%- include("../includes/head") %>
+
+<h1 class="title home">Reset Password</h1>
+<div>
+  <a href="/login">
+    <h4 class="btn btn-home">Back to Login Page</h4>
+  </a>
+</div>
+<form action="/reset" method="post">
+  <input hidden name="_csrf" value="<%= csrfToken %>" />
+  <div class="form-box">
+    <ul>
+      <% if(errorMsg){%>
+      <li>
+        <p class="errMsg"><%=errorMsg%></p>
+      </li>
+      <%}%>
+      <li>
+        <label for="email">Enter Email</label>
+      </li>
+      <li>
+        <input type="email" id="email" name="email" />
+      </li>
+      <li>
+        <button class="btn"> Reset Password </button>
+      </li>
+    </ul>
+  </div>
+</form>
+
+<%- include("../includes/foot") %>
