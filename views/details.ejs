@@ -9,15 +9,17 @@
   <p class="des"><%= post.description%></p>
   <img src="<%= post.imgUrl %>" alt="<%= post.title %>" />
 
+  <% if(post.userId.toString() === currentLoginUserId.toString()) {%>
   <div class="buttons">
     <a href="/admin/edit/<%= post._id %>">
       <h4 class="btn">Edit</h4>
     </a>
     <form action="/admin/delete/<%= post._id %>" method="post">
-      <input hidden name="_csrf" value="<%= csrfToken %>">
+      <input hidden name="_csrf" value="<%= csrfToken %>" />
       <button type="submit" class="btn">Delete</button>
     </form>
   </div>
+  <%}%>
   <hr />
 </section>
 

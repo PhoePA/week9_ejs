@@ -12,7 +12,9 @@
 <div class="buttons">
   <div>
     <a href="./admin/create-post">
-      <button class="btn btn-postlink">Add a new post</button>
+      <button class="btn btn-postlink">
+        Add a new post as <%= currentUserEmail ? currentUserEmail : "" %>
+      </button>
     </a>
   </div>
   <div>
@@ -42,8 +44,7 @@
     <button class="btn">Create a new post now</button></a
   >
 </div>
-<% } %> 
-<% for(let post of postsArray) { %>
+<% } %> <% for(let post of postsArray) { %>
 
 <div class="post-box">
   <div>

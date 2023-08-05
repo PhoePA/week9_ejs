@@ -51,6 +51,8 @@ exports.renderHomePage = (req, res) => {
   // const cookie = req.get("Cookie").split("=")[1].trim()==="true";
   // console.log(cookie);
 
+  // console.log(req.session.userInfo);
+
   // Post.getPosts() // read data from pure  mongodb
   Post.find()
     .select("title")
@@ -61,6 +63,9 @@ exports.renderHomePage = (req, res) => {
       res.render("home", {
         title: "Home Page",
         postsArray: posts,
+        currentUserEmail: req.session.userInfo
+          ? req.session.userInfo.email
+          : "",
       });
     })
     .catch((err) => {
@@ -73,7 +78,7 @@ exports.getPost = (req, res) => {
   // Post.getPost(postId) // get data from pure mongodb
   Post.findById(postId) // find data from mongoosedb
     .then((post) => {
-      res.render("details", { title: post.title, post });
+      res.render("details", { title: post.title, post, currentLoginUserId: req.session.userInfo? req.session.userInfo._id:"" });
     })
     .catch((err) => {
       console.log(err);
@@ -100,14 +105,15 @@ exports.updatePost = (req, res) => {
 
   Post.findById(postId)
     .then((post) => {
-      post.title = title;
+      if (post.userId.toString() !== req.user._id.toString()) {
+        return res.redirect("/");
+      } post.title = title;
       post.description = description;
       post.imgUrl = photo;
-      return post.save();
-    })
-    .then((result) => {
-      console.log("Post updated");
-      res.redirect("/");
+      return post.save().then((result) => {
+        console.log("Post updated");
+        res.redirect("/");
+      });
     })
     .catch((err) => console.log(err));
 
@@ -124,10 +130,10 @@ exports.updatePost = (req, res) => {
 
 exports.deletePost = (req, res) => {
   const { postId } = req.params;
-  Post.findByIdAndRemove(postId)
+  Post.deleteOne({_id : postId, userId : req.user._id})
     .then(() => {
       console.log("Post deleted Successfully!");
       res.redirect("/");
     })
     .catch((err) => console.log(err));
-};
+}; 
