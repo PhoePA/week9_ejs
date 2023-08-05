@@ -1,57 +1,71 @@
 <%- include("./includes/head.ejs") %>
 
-<h1 class="title home">Home Page</h1>
-<h3 class="description">
-  Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium tenetur
-  neque debitis, sed ea eaque dicta id, illo accusantium voluptate obcaecati,
-  laboriosam deserunt. Tenetur eos exercitationem explicabo laboriosam fugit
-  praesentium!
-</h3>
+<div class="body">
+  <h1 class="title home">Blog.io</h1>
+  <h3 class="des">
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium tenetur
+    neque debitis, sed ea eaque dicta id, illo accusantium voluptate obcaecati,
+    laboriosam deserunt. Tenetur eos exercitationem explicabo laboriosam fugit
+    praesentium!
+  </h3>
 
-<% if(isLogin){ %>
-<div class="buttons">
-  <div>
-    <a href="./admin/create-post">
-      <button class="btn btn-postlink">
-        Add a new post as <%= currentUserEmail ? currentUserEmail : "" %>
-      </button>
+  <% if(isLogin){ %>
+  <div class="buttons">
+    <div>
+      <a href="./admin/create-post">
+        <button class="btn btn-postlink">
+          Add a new post as <%= currentUserEmail ? currentUserEmail : "" %>
+        </button>
+      </a>
+    </div>
+    <div>
+      <form action="/logout" method="post">
+        <input hidden value="<%= csrfToken %>" name="_csrf" />
+        <button class="btn" type="submit">Log Out</button>
+      </form>
+    </div>
+  </div>
+  <%} else {%>
+  <div class="buttons">
+    <a href="/register">
+      <button class="btn btn-postlink">Create a new Account</button>
+    </a>
+    <a href="/login">
+      <button class="btn btn-postlink">Login to existing Account</button>
     </a>
   </div>
+  <%}%>
+  <hr />
+  <h1 class="title">Posts</h1>
+
+  <% if(postsArray.length===0 && isLogin) { %>
   <div>
-    <form action="/logout" method="post">
-      <input hidden value="<%= csrfToken %>" name="_csrf" />
-      <button class="btn" type="submit">Log Out</button>
-    </form>
+    <h3 class="title">There is Nothing to see HERE!</h3>
+    <a href="/admin/create-post">
+      <button class="btn">Create a new post now</button></a
+    >
+  </div>
+  <% } %>
+
+  <div class="post-container">
+    <% for(let post of postsArray) { %>
+    <div class="post-box">
+      <div class="post-img">
+        <img src="<%= post.imgUrl %>" alt="<%= post.title %>" />
+      </div>
+      <div class="item">
+        <h3 class="title post-title"><%= post.title %></h3>
+        <a class="btn seemore" href="./post/<%= post._id %>">See More ...</a>
+      </div>
+      <div class="des des-text">
+        <p><%= post.description.substr(0,200) %>...</p>
+      </div>
+      <div>
+        <h3 class="credit">Posted by <%= post.userId.email %></h3>
+      </div>
+    </div>
+    <% } %>
   </div>
 </div>
-<%} else {%>
-<div class="buttons">
-  <a href="/register">
-    <button class="btn btn-postlink">Create a new Account</button>
-  </a>
-  <a href="/login">
-    <button class="btn btn-postlink">Login to existing Account</button>
-  </a>
-</div>
-<%}%>
-<hr />
-<h1 class="title">Posts</h1>
 
-<% if(postsArray.length===0 && isLogin) { %>
-<div>
-  <h3 class="title">There is Nothing to see HERE!</h3>
-  <a href="/admin/create-post">
-    <button class="btn">Create a new post now</button></a
-  >
-</div>
-<% } %> <% for(let post of postsArray) { %>
-
-<div class="post-box">
-  <div>
-    <h3 class="post-title"><%= post.title %></h3>
-    <h3 class="post-title">Posted by => <%= post.userId.email %></h3>
-  </div>
-  <a class="btn" href="./post/<%= post._id %>">See More ...</a>
-</div>
-
-<% } %> <%- include("./includes/foot.ejs") %>
+<%- include("./includes/foot.ejs") %>

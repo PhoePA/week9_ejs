@@ -1,11 +1,28 @@
-.title {
-  text-align: center;
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+</style>
+.body {
+  background-color: yellow;
+  font-family: 'Poppins', sans-serif;
 }
+
+.title {
+  display: block;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.des {
+  text-align: center;
+  margin: 7px 10px;
+  text-align: justify;
+  text-indent: 10%;
+}
+
 .home {
   color: blue;
-}
-.description {
-  color: rgb(121, 201, 36);
 }
 
 a {
@@ -64,18 +81,52 @@ textarea {
   margin: 0 auto;
 }
 
-.post-box {
-  border: 1px dashed dimgrey;
-  padding: 8px 15px;
-  margin: 13px;
+.post-container {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-wrap: wrap;
+}
+
+.post-box {
+  display: block;
+  border: 1px dashed dimgrey;
+  padding: 8px;
+  margin: 5px auto;
+  width: 20%;
+}
+
+.post-img {
+  width: fit-content;
+  margin: 5px auto;
+}
+
+.item {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
 }
 
 .post-title {
-  text-transform: uppercase;
-  font-weight: 600;
+  display: inline-block;
+  margin: 5px 30px;
+  padding: 5px;
+  font-size: 18px;
+  align-items: center;
+}
+
+.seemore {
+  display: inline-block;
+  margin: 5px 30px;
+}
+
+.des-text {
+  letter-spacing: -1px;
+}
+
+.credit {
+  width: fit-contnent;
+  padding: 3px;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .details h1 {
@@ -87,13 +138,6 @@ img {
   width: 100%;
   object-fit: cover;
   border-radius: 8px;
-}
-
-.des {
-  text-align: center;
-  margin: 10px;
-  text-align: justify;
-  text-indent: 10%;
 }
 
 .errMsg {

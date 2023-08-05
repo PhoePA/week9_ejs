@@ -55,7 +55,7 @@ exports.renderHomePage = (req, res) => {
 
   // Post.getPosts() // read data from pure  mongodb
   Post.find()
-    .select("title")
+    .select("title imgUrl description")
     .populate("userId", "email")
     .sort({ title: -1 }) // read data from mongosedb and sort A-Z
     .then((posts) => {
@@ -78,7 +78,13 @@ exports.getPost = (req, res) => {
   // Post.getPost(postId) // get data from pure mongodb
   Post.findById(postId) // find data from mongoosedb
     .then((post) => {
-      res.render("details", { title: post.title, post, currentLoginUserId: req.session.userInfo? req.session.userInfo._id:"" });
+      res.render("details", {
+        title: post.title,
+        post,
+        currentLoginUserId: req.session.userInfo
+          ? req.session.userInfo._id
+          : "",
+      });
     })
     .catch((err) => {
       console.log(err);
@@ -107,7 +113,8 @@ exports.updatePost = (req, res) => {
     .then((post) => {
       if (post.userId.toString() !== req.user._id.toString()) {
         return res.redirect("/");
-      } post.title = title;
+      }
+      post.title = title;
       post.description = description;
       post.imgUrl = photo;
       return post.save().then((result) => {
@@ -130,10 +137,10 @@ exports.updatePost = (req, res) => {
 
 exports.deletePost = (req, res) => {
   const { postId } = req.params;
-  Post.deleteOne({_id : postId, userId : req.user._id})
+  Post.deleteOne({ _id: postId, userId: req.user._id })
     .then(() => {
       console.log("Post deleted Successfully!");
       res.redirect("/");
     })
     .catch((err) => console.log(err));
-}; 
+};
