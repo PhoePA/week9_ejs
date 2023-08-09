@@ -2,14 +2,21 @@
 
 <section class="details">
   <a href="/">
-    <h4 class="btn">Go Back Home</h4>
+    <p class="btn"><i class="fa-solid fa-arrow-left icon"></i>Go Back Home</p>
   </a>
 
   <h1 class="title"><%= post.title %></h1>
   <div class="buttons">
-    <p>Posted by <%= post.userId.email%></p>
+    <div>
+      <p>
+        <i class="fa-solid fa-feather icon"></i>
+        Posted by <%= post.userId.email%>
+      </p>
+    </div>
     <%if(date){%>
-    <p>Uploaded at <%= date%></p>
+    <p>
+      <i class="fa-regular fa-calendar-days icon"></i>Uploaded at <%= date%>
+    </p>
     <%}%>
   </div>
   <p class="des"><%= post.description%></p>
@@ -18,11 +25,15 @@
   <% if(post.userId._id.toString() === currentLoginUserId.toString()) {%>
   <div class="buttons">
     <a href="/admin/edit/<%= post._id %>">
-      <h4 class="btn">Edit</h4>
+      <h4 class="btn">
+        <i class="fa-solid fa-pen-to-square fa-rotate-180 icon"></i>Edit
+      </h4>
     </a>
     <form action="/admin/delete/<%= post._id %>" method="post">
       <input hidden name="_csrf" value="<%= csrfToken %>" />
-      <button type="submit" class="btn">Delete</button>
+      <button type="submit" class="btn">
+        <i class="fa-solid fa-trash-can icon"></i>Delete
+      </button>
     </form>
   </div>
   <%}%>

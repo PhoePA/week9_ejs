@@ -2,10 +2,9 @@ const Post = require("../models/post");
 const { validationResult } = require("express-validator");
 const formatISO9075 = require("date-fns/formatISO9075");
 
-
 // const posts = [];
 
-exports.createPost = (req, res) => {
+exports.createPost = (req, res, next) => {
   const { title, description, photo } = req.body;
   // console.log(` Title value is ${title} and Description is ${description}.`);
   // posts.push({
@@ -33,11 +32,10 @@ exports.createPost = (req, res) => {
   // validation with express-validation
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-  
     return res.status(422).render("addPost", {
       title: "Create Post Page",
-      errorMsg : errors.array()[0].msg,
-      oldFormData: { title, photo, description }
+      errorMsg: errors.array()[0].msg,
+      oldFormData: { title, photo, description },
     });
   }
 
@@ -49,10 +47,12 @@ exports.createPost = (req, res) => {
     })
     .catch((err) => {
       console.log(err);
+      const error = new Error("Something Went Wrong When Creating Post!");
+      return next(error);
     });
 };
 
-exports.renderCreatePage = (req, res) => {
+exports.renderCreatePage = (req, res, next) => {
   // res.sendFile(path.join(__dirname, "..", "views", "addPost.html"));
   res.render("addPost", {
     title: "Create Post Page",
@@ -61,7 +61,7 @@ exports.renderCreatePage = (req, res) => {
   });
 };
 
-exports.renderHomePage = (req, res) => {
+exports.renderHomePage = (req, res, next) => {
   // console.log(posts);
   // res.sendFile(path.join(__dirname, "..", "views", "homePage.html"));
 
@@ -88,19 +88,26 @@ exports.renderHomePage = (req, res) => {
     })
     .catch((err) => {
       console.log(err);
+      const error = new Error(
+        "Cannot Find Post. Please Go Back Previous Page!"
+      );
+      return next(error);
     });
 };
 
-exports.getPost = (req, res) => {
+exports.getPost = (req, res, next) => {
   const postId = req.params.postId;
   // Post.getPost(postId) // get data from pure mongodb
-  Post.findById(postId).populate("userId","email") // find data from mongoosedb
+  Post.findById(postId)
+    .populate("userId", "email") // find data from mongoosedb
     .then((post) => {
-      console.log(post);
+      // console.log(post);
       res.render("details", {
         title: post.title,
         post,
-        date: post.createdAt ?formatISO9075(post.createdAt, { representation: "date" }): "",
+        date: post.createdAt
+          ? formatISO9075(post.createdAt, { representation: "date" })
+          : "",
         currentLoginUserId: req.session.userInfo
           ? req.session.userInfo._id
           : "",
@@ -108,13 +115,15 @@ exports.getPost = (req, res) => {
     })
     .catch((err) => {
       console.log(err);
+      const error = new Error("Post not Found with this ID!");
+      return next(error);
     });
 
   // const post = posts.find((post) => post.id === postID);
   // console.log(post);
 };
 
-exports.getEditPost = (req, res) => {
+exports.getEditPost = (req, res, next) => {
   const postId = req.params.postId;
   Post.findById(postId)
     .then((post) => {
@@ -126,26 +135,36 @@ exports.getEditPost = (req, res) => {
         title: post.title,
         post,
         errorMsg: "",
-        oldFormData: { title: undefined, photo: undefined, description: undefined },
+        oldFormData: {
+          title: undefined,
+          photo: undefined,
+          description: undefined,
+        },
         isValidationFail: false,
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      const error = new Error(
+        "Something Went Wrong When You Editing This Post. Please Try Again!"
+      );
+      return next(error);
+    });
 };
 
-exports.updatePost = (req, res) => {
+exports.updatePost = (req, res, next) => {
   const { postId, title, description, photo } = req.body;
 
-   const errors = validationResult(req);
-   if (!errors.isEmpty()) {   
-     return res.status(422).render("editPost", {
-       postId,
-       title,
-       errorMsg: errors.array()[0].msg,
-       oldFormData: { title, photo, description },
-       isValidationFail: true,
-     });
-   }
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).render("editPost", {
+      postId,
+      title,
+      errorMsg: errors.array()[0].msg,
+      oldFormData: { title, photo, description },
+      isValidationFail: true,
+    });
+  }
   Post.findById(postId)
     .then((post) => {
       if (post.userId.toString() !== req.user._id.toString()) {
@@ -159,7 +178,13 @@ exports.updatePost = (req, res) => {
         res.redirect("/");
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      const error = new Error(
+        "Something Went Wrong When You Updating This Post. Please Try Again!!"
+      );
+      return next(error);
+    });
 
   // const post = new Post(title, description, photo, postId);
 
@@ -172,7 +197,7 @@ exports.updatePost = (req, res) => {
   //   .catch((err) => console.log(err));
 };
 
-exports.deletePost = (req, res) => {
+exports.deletePost = (req, res, next) => {
   const { postId } = req.params;
   Post.deleteOne({ _id: postId, userId: req.user._id })
     .then(() => {

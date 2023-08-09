@@ -170,7 +170,7 @@ exports.resetLinkSend = (req, res) => {
   // error check
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return  res.status(422).render("auth/reset", {
+    return res.status(422).render("auth/reset", {
       title: "Reset Password",
       errorMsg: errors.array()[0].msg,
       oldFormData: { email },

@@ -7,8 +7,7 @@ const dotenv = require("dotenv").config();
 const session = require("express-session");
 const mongoStore = require("connect-mongodb-session")(session);
 const csrf = require("csurf");
-const flash = require("connect-flash")
-
+const flash = require("connect-flash");
 
 // server
 const app = express();
@@ -27,6 +26,9 @@ const authRoutes = require("./routes/auth");
 // model
 const User = require("./models/user");
 
+// controller
+const errorController = require("./controllers/error");
+
 const { isLogin } = require("./middleware/isLogin");
 
 const store = new mongoStore({
@@ -35,7 +37,6 @@ const store = new mongoStore({
 });
 
 const csrfProtect = csrf();
-
 
 //middleware
 app.use(express.static(path.join(__dirname, "public")));
@@ -57,7 +58,7 @@ app.use(
 
 // token for security at form data
 app.use(csrfProtect);
-app.use(flash())
+app.use(flash());
 
 app.use("/", (req, res, next) => {
   // checking login? and logined userinfo
@@ -88,8 +89,12 @@ app.use((req, res, next) => {
 app.use("/admin", isLogin, adminRoutes);
 
 app.use(postRoutes);
-// cookie
+
 app.use(authRoutes);
+
+app.all("*", errorController.get404Page);
+//error middleware
+app.use(errorController.get500Page);
 
 // connect database
 mongoose

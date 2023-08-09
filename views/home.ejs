@@ -14,24 +14,32 @@
     <div>
       <a href="./admin/create-post">
         <button class="btn btn-postlink">
-          Add a new post as <%= currentUserEmail ? currentUserEmail : "" %>
+          <i class="fa-solid fa-plus icon"></i> Add a new post as <%=
+          currentUserEmail ? currentUserEmail : "" %>
         </button>
       </a>
     </div>
     <div>
       <form action="/logout" method="post">
         <input hidden value="<%= csrfToken %>" name="_csrf" />
-        <button class="btn" type="submit">Log Out</button>
+        <button class="btn" type="submit">
+          <i class="fa-solid fa-right-from-bracket icon"></i>Log Out
+        </button>
       </form>
     </div>
   </div>
   <%} else {%>
   <div class="buttons">
     <a href="/register">
-      <button class="btn btn-postlink">Create a new Account</button>
+      <button class="btn btn-postlink">
+        <i class="fa-solid fa-plus icon"></i>Create a new Account
+      </button>
     </a>
     <a href="/login">
-      <button class="btn btn-postlink">Login to existing Account</button>
+      <button class="btn btn-postlink">
+        <i class="fa-solid fa-right-to-bracket icon"></i>Login to existing
+        Account
+      </button>
     </a>
   </div>
   <%}%>

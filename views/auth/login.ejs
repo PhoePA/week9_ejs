@@ -3,7 +3,9 @@
 <h1 class="title home">Log in to your account!</h1>
 <div>
   <a href="/">
-    <h4 class="btn btn-home">Go Back Home</h4>
+    <p class="btn btn-home">
+      <i class="fa-solid fa-arrow-left icon"></i>Go Back Home
+    </p>
   </a>
 </div>
 <form action="/login" method="post">
@@ -19,27 +21,46 @@
         <label for="username">Enter Username</label>
       </li>
       <li>
-        <input type="text" id="username" name="username" value="<%= oldFormData.username%>"/>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          value="<%= oldFormData.username%>"
+        />
       </li>
       <li>
         <label for="email">Enter Email</label>
       </li>
       <li>
-        <input type="email" id="email" name="email" value="<%= oldFormData.email %>"/>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          value="<%= oldFormData.email %>"
+        />
       </li>
       <li>
         <label for="password">Enter Password</label>
       </li>
       <li>
-        <input type="password" id="password" name="password" value="<%= oldFormData.password %>"/>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          value="<%= oldFormData.password %>"
+        />
       </li>
       <div class="buttons">
         <a href="#">
-          <button type="submit" class="btn">Log in</button>
+          <button type="submit" class="btn">
+            <i class="fa-solid fa-right-to-bracket icon"></i>Log in
+          </button>
         </a>
 
         <a href="/reset-password">
-          <button type="button" class="btn">Forget Password</button>
+          <button type="button" class="btn">
+            <i class="fa-solid fa-unlock icon"></i>Forget Password
+          </button>
         </a>
       </div>
     </ul>

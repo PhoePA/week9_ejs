@@ -21,8 +21,20 @@
   text-indent: 10%;
 }
 
+
+
 .home {
   color: blue;
+}
+
+.icon{
+  font-size: 18px;
+  margin: 5px ;
+  text-align: center;
+}
+.err{
+  font-size: 2rem;
+  color: red;
 }
 
 a {
@@ -55,6 +67,7 @@ textarea {
 }
 
 .btn {
+  font-size: 15px;
   display: block;
   padding: 5px;
   border-radius: 5px;
@@ -67,7 +80,7 @@ textarea {
 
 .btn:hover {
   color: yellow;
-  font-size: 15px;
+  font-size: 19px;
 }
 
 .buttons {
