@@ -6,10 +6,16 @@
   </a>
 
   <h1 class="title"><%= post.title %></h1>
+  <div class="buttons">
+    <p>Posted by <%= post.userId.email%></p>
+    <%if(date){%>
+    <p>Uploaded at <%= date%></p>
+    <%}%>
+  </div>
   <p class="des"><%= post.description%></p>
   <img src="<%= post.imgUrl %>" alt="<%= post.title %>" />
 
-  <% if(post.userId.toString() === currentLoginUserId.toString()) {%>
+  <% if(post.userId._id.toString() === currentLoginUserId.toString()) {%>
   <div class="buttons">
     <a href="/admin/edit/<%= post._id %>">
       <h4 class="btn">Edit</h4>

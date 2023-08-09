@@ -1,37 +1,55 @@
 <%- include("./includes/head") %>
 
-<h1 class="title home">Add a new Post Here!</h1>
 <div>
   <a href="/">
     <h4 class="btn btn-home">Go Back Home</h4>
   </a>
 </div>
-<form action="/admin" method="post">
-   <input hidden name="_csrf" value="<%= csrfToken %>">
+
+<form action="/admin" method="post" novalidate>
+  <input hidden name="_csrf" value="<%= csrfToken %>" />
+
   <div class="form-box">
     <ul>
+      <li>
+        <h1 class="title home">Add a new Post Here!</h1>
+      </li>
+      <% if(errorMsg){%>
+      <li>
+        <p class="errMsg"><%=errorMsg%></p>
+      </li>
+      <%}%>
       <li>
         <label for="title">Enter Title</label>
       </li>
       <li>
-        <input type="text" id="title" name="title" required />
+        <input
+          type="text"
+          id="title"
+          name="title"
+          required
+          value="<%= oldFormData.title%>"
+        />
       </li>
       <li>
         <label for="photo">Enter photo</label>
       </li>
       <li>
-        <input type="text" id="photo" name="photo" required />
+        <input
+          type="text"
+          id="photo"
+          name="photo"
+          required
+          value="<%= oldFormData.photo%>"
+        />
       </li>
       <li>
         <label for="description">Enter Description</label>
       </li>
       <li>
-        <textarea
-          name="description"
-          id="description"
-          cols="30"
-          rows="10"
-        ></textarea>
+        <textarea name="description" id="description" cols="30" rows="10">
+<%=oldFormData.description%></textarea
+        >
       </li>
       <li>
         <a href="#">

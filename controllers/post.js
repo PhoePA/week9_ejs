@@ -1,4 +1,7 @@
 const Post = require("../models/post");
+const { validationResult } = require("express-validator");
+const formatISO9075 = require("date-fns/formatISO9075");
+
 
 // const posts = [];
 
@@ -27,6 +30,17 @@ exports.createPost = (req, res) => {
   //     console.log(err);
   //   });
 
+  // validation with express-validation
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+  
+    return res.status(422).render("addPost", {
+      title: "Create Post Page",
+      errorMsg : errors.array()[0].msg,
+      oldFormData: { title, photo, description }
+    });
+  }
+
   //create data using mongoose
   Post.create({ title, description, imgUrl: photo, userId: req.user })
     .then((result) => {
@@ -40,7 +54,11 @@ exports.createPost = (req, res) => {
 
 exports.renderCreatePage = (req, res) => {
   // res.sendFile(path.join(__dirname, "..", "views", "addPost.html"));
-  res.render("addPost", { title: "Post Page" });
+  res.render("addPost", {
+    title: "Create Post Page",
+    errorMsg: "",
+    oldFormData: { title: "", photo: "", description: "" },
+  });
 };
 
 exports.renderHomePage = (req, res) => {
@@ -76,11 +94,13 @@ exports.renderHomePage = (req, res) => {
 exports.getPost = (req, res) => {
   const postId = req.params.postId;
   // Post.getPost(postId) // get data from pure mongodb
-  Post.findById(postId) // find data from mongoosedb
+  Post.findById(postId).populate("userId","email") // find data from mongoosedb
     .then((post) => {
+      console.log(post);
       res.render("details", {
         title: post.title,
         post,
+        date: post.createdAt ?formatISO9075(post.createdAt, { representation: "date" }): "",
         currentLoginUserId: req.session.userInfo
           ? req.session.userInfo._id
           : "",
@@ -101,7 +121,14 @@ exports.getEditPost = (req, res) => {
       if (!post) {
         return res.redirect("/");
       }
-      res.render("editPost", { title: post.title, post });
+      res.render("editPost", {
+        postId: undefined,
+        title: post.title,
+        post,
+        errorMsg: "",
+        oldFormData: { title: undefined, photo: undefined, description: undefined },
+        isValidationFail: false,
+      });
     })
     .catch((err) => console.log(err));
 };
@@ -109,6 +136,16 @@ exports.getEditPost = (req, res) => {
 exports.updatePost = (req, res) => {
   const { postId, title, description, photo } = req.body;
 
+   const errors = validationResult(req);
+   if (!errors.isEmpty()) {   
+     return res.status(422).render("editPost", {
+       postId,
+       title,
+       errorMsg: errors.array()[0].msg,
+       oldFormData: { title, photo, description },
+       isValidationFail: true,
+     });
+   }
   Post.findById(postId)
     .then((post) => {
       if (post.userId.toString() !== req.user._id.toString()) {

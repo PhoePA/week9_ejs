@@ -95,13 +95,11 @@ exports.postLoginData = (req, res) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    res
-      .status(422)
-      .render("auth/login", {
-        title: "Login Page",
-        errorMsg: errors.array()[0].msg,
-        oldFormData: { username, email, password },
-      });
+    res.status(422).render("auth/login", {
+      title: "Login Page",
+      errorMsg: errors.array()[0].msg,
+      oldFormData: { username, email, password },
+    });
   }
 
   User.findOne({ email })
@@ -156,6 +154,7 @@ exports.getResetPage = (req, res) => {
   res.render("auth/reset", {
     title: "Reset Password",
     errorMsg: message,
+    oldFormData: { email: "" },
   });
 };
 
@@ -167,6 +166,16 @@ exports.getFeedbackPage = (req, res) => {
 //reset password link send
 exports.resetLinkSend = (req, res) => {
   const { email } = req.body;
+
+  // error check
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return  res.status(422).render("auth/reset", {
+      title: "Reset Password",
+      errorMsg: errors.array()[0].msg,
+      oldFormData: { email },
+    });
+  }
   crypto.randomBytes(32, (err, buffer) => {
     if (err) {
       console.log(err);
@@ -176,8 +185,11 @@ exports.resetLinkSend = (req, res) => {
     User.findOne({ email })
       .then((user) => {
         if (!user) {
-          req.flash("error", "No account match with this email.");
-          return res.redirect("/reset-password");
+          return res.status(422).render("auth/reset", {
+            title: "Reset Password",
+            errorMsg: "No account exits with this Email address!",
+            oldFormData: { email },
+          });
         }
         user.resetToken = token;
         user.tokenExpireTime = Date.now() + 3600000;
@@ -219,7 +231,7 @@ exports.getNewPasswordPage = (req, res) => {
           errorMsg: message,
           resetToken: token,
           user_id: user._id,
-          oldFormData:{password:"", confirm_password: ""},
+          oldFormData: { password: "", confirm_password: "" },
         });
       } else {
         res.redirect("/");
@@ -231,18 +243,18 @@ exports.getNewPasswordPage = (req, res) => {
 exports.changeNewPassword = (req, res) => {
   const { password, confirm_password, user_id, resetToken } = req.body;
 
-   const errors = validationResult(req);
+  const errors = validationResult(req);
 
-   if (!errors.isEmpty()) {
+  if (!errors.isEmpty()) {
     return res.status(422).render("auth/new-password", {
-       title: "Change Password",
-       resetToken,
-       user_id,
-       errorMsg: errors.array()[0].msg,
-       oldFormData: { password, confirm_password },
-     });
+      title: "Change Password",
+      resetToken,
+      user_id,
+      errorMsg: errors.array()[0].msg,
+      oldFormData: { password, confirm_password },
+    });
   }
-  
+
   let resetUser;
   User.findOne({
     resetToken,
@@ -254,12 +266,12 @@ exports.changeNewPassword = (req, res) => {
         resetUser = user;
         return bcrypt.hash(password, 10);
       } else {
-        return  res.render("auth/new-password", {
+        return res.render("auth/new-password", {
           title: "Change Password",
           errorMsg: message,
           resetToken: token,
           user_id: user._id,
-        })
+        });
       }
     })
     .then((hashedPassword) => {
