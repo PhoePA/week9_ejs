@@ -5,7 +5,7 @@ const formatISO9075 = require("date-fns/formatISO9075");
 // const posts = [];
 
 exports.createPost = (req, res, next) => {
-  const { title, description, photo } = req.body;
+  const { title, description } = req.body;
   // console.log(` Title value is ${title} and Description is ${description}.`);
   // posts.push({
   //   id: Math.random(),
@@ -29,18 +29,35 @@ exports.createPost = (req, res, next) => {
   //     console.log(err);
   //   });
 
+  // log files
+  // console.log(req.file);
+  const image = req.file;
+  console.log("I am image info" + image);
+
   // validation with express-validation
   const errors = validationResult(req);
+
+  // mimetype for image validation
+  if (image === undefined) {
+    return res.status(422).render("addPost", {
+      title: "Create Post Page",
+      errorMsg: "Please upload valid Image format like JPG, JPEG and PNG!",
+      oldFormData: { title, description },
+    });
+  }
+
+  // title & description validation
   if (!errors.isEmpty()) {
     return res.status(422).render("addPost", {
       title: "Create Post Page",
       errorMsg: errors.array()[0].msg,
-      oldFormData: { title, photo, description },
+      oldFormData: { title, description },
     });
   }
 
+  console.log(image.path);
   //create data using mongoose
-  Post.create({ title, description, imgUrl: photo, userId: req.user })
+  Post.create({ title, description, imgUrl: image.path, userId: req.user })
     .then((result) => {
       console.log(result);
       res.redirect("/");
@@ -73,7 +90,7 @@ exports.renderHomePage = (req, res, next) => {
 
   // Post.getPosts() // read data from pure  mongodb
   Post.find()
-    .select("title imgUrl description")
+    .select("imgUrl description")
     .populate("userId", "email")
     .sort({ title: -1 }) // read data from mongosedb and sort A-Z
     .then((posts) => {
@@ -137,7 +154,7 @@ exports.getEditPost = (req, res, next) => {
         errorMsg: "",
         oldFormData: {
           title: undefined,
-          photo: undefined,
+          // photo: undefined,
           description: undefined,
         },
         isValidationFail: false,
@@ -153,15 +170,25 @@ exports.getEditPost = (req, res, next) => {
 };
 
 exports.updatePost = (req, res, next) => {
-  const { postId, title, description, photo } = req.body;
+  const { postId, title, description } = req.body;
 
+  const image = req.file;
   const errors = validationResult(req);
+  // if (image === undefined) {
+  //   return res.status(422).render("editPost", {
+  //     postId,
+  //     title,
+  //     isValidationFail: true,
+  //     errorMsg: "Please upload valid Image format like JPG, JPEG and PNG!",
+  //     oldFormData: { title, description },
+  //   });
+  // }
   if (!errors.isEmpty()) {
     return res.status(422).render("editPost", {
       postId,
       title,
       errorMsg: errors.array()[0].msg,
-      oldFormData: { title, photo, description },
+      oldFormData: { title, description },
       isValidationFail: true,
     });
   }
@@ -172,7 +199,9 @@ exports.updatePost = (req, res, next) => {
       }
       post.title = title;
       post.description = description;
-      post.imgUrl = photo;
+      if (image) {
+        post.imgUrl = image.path;
+      }
       return post.save().then((result) => {
         console.log("Post updated");
         res.redirect("/");

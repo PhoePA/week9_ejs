@@ -5,8 +5,7 @@
   </a>
 </div>
 
-
-<form action="/admin/edit-post" method="post" novalidate>
+<form action="/admin/edit-post" method="post" enctype="multipart/form-data">
   <input hidden name="_csrf" value="<%= csrfToken  %>" />
   <div class="form-box">
     <ul>
@@ -43,11 +42,12 @@
       </li>
       <li>
         <input
-          type="text"
+          type="file"
           id="photo"
           name="photo"
+          <!--
           value="<%= isValidationFail ? oldFormData.photo : post.imgUrl  %>"
-          required
+          --
         />
       </li>
       <li>

@@ -8,7 +8,7 @@
   </a>
 </div>
 
-<form action="/admin" method="post" novalidate>
+<form action="/admin" method="post" enctype="multipart/form-data">
   <input hidden name="_csrf" value="<%= csrfToken %>" />
 
   <div class="form-box">
@@ -34,16 +34,10 @@
         />
       </li>
       <li>
-        <label for="photo">Enter photo</label>
+        <label for="photo">Select Photo</label>
       </li>
       <li>
-        <input
-          type="text"
-          id="photo"
-          name="photo"
-          required
-          value="<%= oldFormData.photo%>"
-        />
+        <input type="file" id="photo" name="photo" required />
       </li>
       <li>
         <label for="description">Enter Description</label>

@@ -48,9 +48,15 @@
 
   <% if(postsArray.length===0 && isLogin) { %>
   <div>
-    <h3 class="title">There is Nothing to see HERE!</h3>
+    <h3 class="title">
+      There is Nothing to see HERE!<i
+        class="fa-regular fa-face-frown-open icon err"
+      ></i>
+    </h3>
     <a href="/admin/create-post">
-      <button class="btn">Create a new post now</button></a
+      <button class="btn">
+        <i class="fa-solid fa-plus icon"></i>Create a new post now
+      </button></a
     >
   </div>
   <% } %>

@@ -20,7 +20,7 @@
     <%}%>
   </div>
   <p class="des"><%= post.description%></p>
-  <img src="<%= post.imgUrl %>" alt="<%= post.title %>" />
+  <img src="<%= '/'+ post.imgUrl %>" alt="<%= post.title %>" />
 
   <% if(post.userId._id.toString() === currentLoginUserId.toString()) {%>
   <div class="buttons">
