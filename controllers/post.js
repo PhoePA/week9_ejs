@@ -1,6 +1,12 @@
 const Post = require("../models/post");
 const { validationResult } = require("express-validator");
 const formatISO9075 = require("date-fns/formatISO9075");
+const pdf = require("pdf-creator-node");
+const fs = require("fs");
+const expressPath = require("path");
+
+const fileDelete = require("../utils/fileDelete");
+const { log } = require("console");
 
 // const posts = [];
 
@@ -90,7 +96,7 @@ exports.renderHomePage = (req, res, next) => {
 
   // Post.getPosts() // read data from pure  mongodb
   Post.find()
-    .select("imgUrl description")
+    .select("title imgUrl description")
     .populate("userId", "email")
     .sort({ title: -1 }) // read data from mongosedb and sort A-Z
     .then((posts) => {
@@ -200,6 +206,7 @@ exports.updatePost = (req, res, next) => {
       post.title = title;
       post.description = description;
       if (image) {
+        fileDelete(post.imgUrl);
         post.imgUrl = image.path;
       }
       return post.save().then((result) => {
@@ -228,10 +235,98 @@ exports.updatePost = (req, res, next) => {
 
 exports.deletePost = (req, res, next) => {
   const { postId } = req.params;
-  Post.deleteOne({ _id: postId, userId: req.user._id })
+
+  // delete photo in folder
+  Post.findById(postId)
+    .then((post) => {
+      if (!post) {
+        return res.redirect("/");
+      }
+      // delete post image from local storage
+      fileDelete(post.imgUrl);
+
+      // delete post data in database
+      return Post.deleteOne({ _id: postId, userId: req.user._id });
+    })
     .then(() => {
       console.log("Post deleted Successfully!");
       res.redirect("/");
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      const error = new Error(
+        "Something Went Wrong When You Updating This Post. Please Try Again!!"
+      );
+      return next(error);
+    });
+};
+
+exports.savePostPDF = (req, res, next) => {
+  const { id } = req.params;
+  const templateUrl = `${expressPath.join(
+    __dirname,
+    "../views/template/template.html"
+  )}`;
+  const html = fs.readFileSync(templateUrl, "utf8");
+  const options = {
+    format: "A4",
+    orientation: "portrait",
+    border: "10mm",
+    header: {
+      height: "45mm",
+      contents:
+        '<h4 style="text-align: center;font-size: 2rem;">PDF Download from Blog.IO</h4>',
+    },
+    footer: {
+      height: "28mm",
+      contents: {
+        first: "Cover page",
+        // 2: "Second page", // Any page number is working. 1-based index
+        contents:
+          '<span style="color: #f2f7f7;text-align: center;">@CodeHub.mm</span>', // fallback value
+      },
+    },
+  };
+
+  let postData = {};
+  Post.findById(id)
+    .populate("userId", "email")
+    .lean()
+    .then((post) => {
+      const date = new Date();
+      const pdfSavedUrl = `${expressPath.join(
+        __dirname,
+        "../public/pdf",
+        date.getTime() + ".pdf"
+      )}`;
+      console.log(post);
+      const document = {
+        html,
+        data: {
+          post,
+        },
+        path: pdfSavedUrl,
+        type: "",
+      };
+
+      pdf
+        .create(document, options)
+        .then((result) => {
+          console.log(result);
+          res.download(pdfSavedUrl, (err) => {
+            if (err) throw err;
+            fileDelete(pdfSavedUrl);
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    })
+    .catch((err) => {
+      console.log(err);
+      const error = new Error(
+        "Something Went Wrong When You Updating This Post. Please Try Again!!"
+      );
+      return next(error);
+    });
 };

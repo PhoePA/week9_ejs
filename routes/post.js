@@ -13,4 +13,6 @@ router.get("/", postController.renderHomePage);
 // });
 router.get("/post/:postId", postController.getPost);
 
+router.get("/save/:id", postController.savePostPDF);
+
 module.exports = router;
