@@ -269,26 +269,18 @@ exports.savePostPDF = (req, res, next) => {
   )}`;
   const html = fs.readFileSync(templateUrl, "utf8");
   const options = {
-    format: "A4",
+    format: "A3",
     orientation: "portrait",
     border: "10mm",
     header: {
-      height: "45mm",
+      height: "20mm",
       contents:
         '<h4 style="text-align: center;font-size: 2rem;">PDF Download from Blog.IO</h4>',
     },
-    footer: {
-      height: "28mm",
-      contents: {
-        first: "Cover page",
-        // 2: "Second page", // Any page number is working. 1-based index
-        contents:
-          '<span style="color: #f2f7f7;text-align: center;">@CodeHub.mm</span>', // fallback value
-      },
-    },
+    
   };
 
-  let postData = {};
+
   Post.findById(id)
     .populate("userId", "email")
     .lean()
@@ -299,7 +291,7 @@ exports.savePostPDF = (req, res, next) => {
         "../public/pdf",
         date.getTime() + ".pdf"
       )}`;
-      console.log(post);
+    
       const document = {
         html,
         data: {

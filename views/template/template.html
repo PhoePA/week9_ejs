@@ -5,28 +5,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PDF Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <section class="details">
-      <h1 class="title">{{post.title}}</h1>
-      <div class="buttons">
-        <div>
-          <p>
-            <i class="fa-solid fa-feather icon"></i>
-            Author => {{post.userId.email}}
-          </p>
-        </div>
-
-        <p>
-          <i class="fa-regular fa-calendar-days icon"></i>Uploaded at
-          {{post.createdAt}}
-        </p>
-      </div>
-      <p class="des">{{ post.description}}</p>
-      <img
-        src="http://localhost:8080/{{ post.imgUrl }}"
-        alt="{{post.title }}"
-      />
-    </section>
+    <h1 style="text-align: center">{{post.title}}</h1>
+    <p>Author => {{post.userId.email}}</p>
+    <p>Uploaded at {{post.createdAt}}</p>
+    <p style="font-family: 'Poppins', sans-serif">{{ post.description}}</p>
+    <img src="http://localhost:8080/{{ post.imgUrl }}" alt="{{post.title }}" />
   </body>
 </html>
