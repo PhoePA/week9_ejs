@@ -8,7 +8,7 @@ const expressPath = require("path");
 const fileDelete = require("../utils/fileDelete");
 const { log } = require("console");
 
-// const posts = [];
+const postPerPage = 3;
 
 exports.createPost = (req, res, next) => {
   const { title, description } = req.body;
@@ -85,7 +85,9 @@ exports.renderCreatePage = (req, res, next) => {
 };
 
 exports.renderHomePage = (req, res, next) => {
-  // console.log(posts);
+  const pageNumber = +req.query.page || 1;
+
+  let totalPostNumber;
   // res.sendFile(path.join(__dirname, "..", "views", "homePage.html"));
 
   //cookie
@@ -94,20 +96,56 @@ exports.renderHomePage = (req, res, next) => {
 
   // console.log(req.session.userInfo);
 
-  // Post.getPosts() // read data from pure  mongodb
+  // get no of post
   Post.find()
-    .select("title imgUrl description")
-    .populate("userId", "email")
-    .sort({ title: -1 }) // read data from mongosedb and sort A-Z
+    .countDocuments()
+    .then((totalPostCount) => {
+      totalPostNumber = totalPostCount;
+
+      // total  =12
+      // per page = 3
+      // next page = -3  +3
+
+      // page => 1-1 = 0
+      // per page => 3 * 0 = 0
+
+      // page => 2-1 = 1
+      // per page => 3*1 =3
+
+      // page => 3-1 = 2
+      // per page => 3 * 2 = 6
+
+      // page => 4 -1 =3
+      // per page => 3*3 = 9
+
+      // Post.getPosts() // read data from pure  mongodb
+      return Post.find()
+        .select("title imgUrl description")
+        .populate("userId", "email")
+        .skip((pageNumber - 1) * postPerPage)
+        .limit(postPerPage)
+        .sort({ createdAt: -1 }); // read data from mongosedb and sort
+    })
     .then((posts) => {
-      // console.log(posts);
-      res.render("home", {
-        title: "Home Page",
-        postsArray: posts,
-        currentUserEmail: req.session.userInfo
-          ? req.session.userInfo.email
-          : "",
-      });
+      if (posts.length > 0) {
+        return res.render("home", {
+          title: "Home Page",
+          postsArray: posts,
+          currentUserEmail: req.session.userInfo
+            ? req.session.userInfo.email
+            : "",
+          currentPage: pageNumber,
+          nextPage: pageNumber + 1,
+          previousPage: pageNumber - 1,
+          hasNextPage: postPerPage * pageNumber < totalPostNumber,
+          hasPreviousPage: pageNumber > 1,
+        });
+      } else {
+        return res.status(500).render("error/500", {
+          title: "Error 404 ",
+          message: "No Post In this Page!",
+        });
+      }
     })
     .catch((err) => {
       console.log(err);
@@ -277,9 +315,7 @@ exports.savePostPDF = (req, res, next) => {
       contents:
         '<h4 style="text-align: center;font-size: 2rem;">PDF Download from Blog.IO</h4>',
     },
-    
   };
-
 
   Post.findById(id)
     .populate("userId", "email")
@@ -291,7 +327,7 @@ exports.savePostPDF = (req, res, next) => {
         "../public/pdf",
         date.getTime() + ".pdf"
       )}`;
-    
+
       const document = {
         html,
         data: {

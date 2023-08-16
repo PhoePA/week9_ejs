@@ -80,6 +80,18 @@
     </div>
     <% } %>
   </div>
+  <hr />
+  <div class="buttons">
+    <%if(!hasNextPage && currentPage ==1){%>
+    <a href="/?page=2" class="btn">Next Page</a>
+    <%}%> <%if(hasNextPage){%>
+    <a href="/?page=<%= nextPage%>" class="btn">Next Page <%= nextPage%></a>
+    <%}%> <%if(hasPreviousPage){%>
+    <a href="/?page=<%= previousPage%>" class="btn"
+      >Previous Page <%= previousPage%></a
+    >
+    <%}%>
+  </div>
 </div>
 
 <%- include("./includes/foot.ejs") %>

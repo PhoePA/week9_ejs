@@ -21,8 +21,6 @@
   text-indent: 10%;
 }
 
-
-
 .home {
   color: blue;
 }
@@ -32,6 +30,7 @@
   margin: 5px ;
   text-align: center;
 }
+
 .err{
   font-size: 2rem;
   color: red;
@@ -100,14 +99,23 @@ textarea {
 .post-container {
   display: flex;
   flex-wrap: wrap;
+  background-color: #f2f7f7;
+  padding: 5px;
+}
+
+.post-container > .post-box {
+
+  flex:  auto;
+  margin: 5px;
+  padding: 10px;
+  border: 2px red solid;
 }
 
 .post-box {
-  display: block;
-  border: 1px dashed dimgrey;
+  /* border: 1px dashed dimgrey; */
   padding: 8px;
   margin: 5px auto;
-  width: 20%;
+  width: 30%;
 }
 
 .post-img {
