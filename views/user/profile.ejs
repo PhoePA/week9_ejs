@@ -1,0 +1,40 @@
+<%- include("../includes/head.ejs")%>
+<section>
+  <h1 class="title">
+    <i class="fa-solid fa-circle-user fa-beat"></i>Posted by <%=
+    currentUserEmail %>
+  </h1>
+
+  <div class="post-container">
+    <% for(let post of postsArray) { %>
+    <div class="post-box">
+      <div class="post-img">
+        <img src="<%= '/'+ post.imgUrl %>" alt="<%= post.title %>" />
+      </div>
+      <div class="buttons">
+        <h3 class="post-title"><%= post.title.substr(0,15) %></h3>
+        <a class="btn" href="./post/<%= post._id %>">Read More</a>
+      </div>
+      <div class="des des-text">
+        <p><%= post.description.substr(0,200) %>...</p>
+      </div>
+      <div>
+        <h3 class="credit">Posted by <%= post.userId.email %></h3>
+      </div>
+    </div>
+    <% } %>
+  </div>
+  <hr />
+  <div class="buttons">
+    <%if(hasNextPage){%>
+    <a href="/admin/profile/?page=<%= nextPage%>" class="btn">
+      Next Page <%= nextPage%>
+    </a>
+    <%}%> <%if(hasPreviousPage){%>
+    <a href="/admin/profile/?page=<%= previousPage%>" class="btn">
+      Previous Page <%= previousPage%>
+    </a>
+    <%}%>
+  </div>
+</section>
+<%- include("../includes/foot.ejs")%>

@@ -4,6 +4,7 @@ const { log } = require("console");
 const router = express.Router();
 
 const postController = require("../controllers/post");
+const userController = require("../controllers/user")
 
 const { body } = require("express-validator");
 
@@ -45,5 +46,8 @@ router.post(
 );
 
 router.post("/delete/:postId", postController.deletePost);
+
+// get profile
+router.get("/profile",userController.getProfile)
 
 module.exports = router;

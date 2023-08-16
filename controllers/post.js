@@ -8,7 +8,7 @@ const expressPath = require("path");
 const fileDelete = require("../utils/fileDelete");
 const { log } = require("console");
 
-const postPerPage = 3;
+const postPerPage = 5;
 
 exports.createPost = (req, res, next) => {
   const { title, description } = req.body;

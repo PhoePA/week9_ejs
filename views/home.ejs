@@ -1,50 +1,17 @@
 <%- include("./includes/head.ejs") %>
 
 <div class="body">
-  <h1 class="title home">Blog.io</h1>
-  <h3 class="des">
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium tenetur
-    neque debitis, sed ea eaque dicta id, illo accusantium voluptate obcaecati,
-    laboriosam deserunt. Tenetur eos exercitationem explicabo laboriosam fugit
-    praesentium!
-  </h3>
-
-  <% if(isLogin){ %>
-  <div class="buttons">
-    <div>
-      <a href="./admin/create-post">
-        <button class="btn btn-postlink">
-          <i class="fa-solid fa-plus icon"></i> Add a new post as <%=
-          currentUserEmail ? currentUserEmail : "" %>
-        </button>
-      </a>
-    </div>
-    <div>
-      <form action="/logout" method="post">
-        <input hidden value="<%= csrfToken %>" name="_csrf" />
-        <button class="btn" type="submit">
-          <i class="fa-solid fa-right-from-bracket icon"></i>Log Out
-        </button>
-      </form>
-    </div>
-  </div>
-  <%} else {%>
-  <div class="buttons">
-    <a href="/register">
-      <button class="btn btn-postlink">
-        <i class="fa-solid fa-plus icon"></i>Create a new Account
-      </button>
-    </a>
-    <a href="/login">
-      <button class="btn btn-postlink">
-        <i class="fa-solid fa-right-to-bracket icon"></i>Login to existing
-        Account
-      </button>
-    </a>
-  </div>
-  <%}%>
-  <hr />
   <h1 class="title">Posts</h1>
+   <% if(isLogin){ %>
+        <div class="buttons">         
+            <a href="./admin/create-post">
+              <button class="btn btn-postlink">
+                <i class="fa-solid fa-plus icon"></i> Add a new post as <%=
+                currentUserEmail ? currentUserEmail : "" %>
+              </button>
+            </a>        
+        </div>
+        <%}%>
 
   <% if(postsArray.length===0 && isLogin) { %>
   <div>
@@ -67,9 +34,9 @@
       <div class="post-img">
         <img src="<%= post.imgUrl %>" alt="<%= post.title %>" />
       </div>
-      <div class="item">
-        <h3 class="title post-title"><%= post.title %></h3>
-        <a class="btn seemore" href="./post/<%= post._id %>">Read More ...</a>
+      <div class="buttons">
+        <h3 class=" post-title"><%= post.title.substr(0,15) %></h3>
+        <a class="btn " href="./post/<%= post._id %>">Read More</a>
       </div>
       <div class="des des-text">
         <p><%= post.description.substr(0,200) %>...</p>

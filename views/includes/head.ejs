@@ -1,15 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <%= title %>
-    </title>
-    <link rel="stylesheet" href="/css/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-</head>
-
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+  </head>
+  <body>
+    <nav>
+      <h1 class="title"><a href="/">Blog.IO</a></h1>
+      <div>
+        <% if(isLogin){ %>
+        <div class="buttons">
+          <a href="/admin/profile">
+            <button class="btn">
+              <i class="fa-solid fa-user icon"></i>Profile
+            </button>
+          </a>
+          <form action="/logout" method="post">
+            <input hidden value="<%= csrfToken %>" name="_csrf" />
+            <button class="btn" type="submit">
+              <i class="fa-solid fa-right-from-bracket icon"></i>Log Out
+            </button>
+          </form>
+        </div>
+        <%} else {%>
+        <div class="buttons">
+          <a href="/register">
+            <button class="btn btn-postlink">
+              <i class="fa-solid fa-user-plus icon"></i>Sign Up
+            </button>
+          </a>
+          <a href="/login">
+            <button class="btn btn-postlink">
+              <i class="fa-solid fa-right-to-bracket icon"></i>Log In
+            </button>
+          </a>
+        </div>
+        <%}%>
+      </div>
+    </nav>
+ 
