@@ -36,7 +36,6 @@ exports.registerAccount = (req, res) => {
 
   // user info validation
   const errors = validationResult(req);
-  console.log(errors);
   if (!errors.isEmpty()) {
     return res.status(422).render("auth/register", {
       title: "Register",
@@ -89,7 +88,7 @@ exports.getLoginPage = (req, res) => {
 exports.postLoginData = (req, res) => {
   // res.setHeader("Set-Cookie","isLogIn=true") // cookie
 
-  const { username, email, password } = req.body;
+  const { email, password } = req.body;
 
   // filled data validation
   const errors = validationResult(req);
@@ -98,7 +97,7 @@ exports.postLoginData = (req, res) => {
     res.status(422).render("auth/login", {
       title: "Login Page",
       errorMsg: errors.array()[0].msg,
-      oldFormData: { username, email, password },
+      oldFormData: { email, password },
     });
   }
 
@@ -107,8 +106,8 @@ exports.postLoginData = (req, res) => {
       if (!user) {
         return res.status(422).render("auth/login", {
           title: "Login Page",
-          errorMsg: "Please enter valid Username, Email and Password",
-          oldFormData: { username, email, password },
+          errorMsg: "Please enter valid Email and Password",
+          oldFormData: { email, password },
         });
       }
       bcrypt
@@ -124,8 +123,8 @@ exports.postLoginData = (req, res) => {
           }
           res.status(422).render("auth/login", {
             title: "Login Page",
-            errorMsg: "Please enter valid Username, Email and Password",
-            oldFormData: { username, email, password },
+            errorMsg: "Please enter valid Email and Password",
+            oldFormData: { email, password },
           });
         })
         .catch((err) => console.log(err));
@@ -218,7 +217,6 @@ exports.getNewPasswordPage = (req, res) => {
   console.log(token);
   User.findOne({ resetToken: token, tokenExpireTime: { $gt: Date.now() } })
     .then((user) => {
-      console.log(user);
       if (user) {
         let message = req.flash("error");
         if (message.length > 0) {

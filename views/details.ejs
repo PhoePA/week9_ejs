@@ -20,30 +20,41 @@
     <%}%>
   </div>
 
-   <% if(post.userId._id.toString() === currentLoginUserId.toString()) {%>
+  <% if(post.userId._id.toString() === currentLoginUserId.toString()) {%>
   <div class="buttons">
-    <a href="/admin/edit/<%= post._id %>">
-      <h4 class="btn">
-        <i class="fa-solid fa-pen-to-square fa-rotate-180 icon"></i>Edit
-      </h4>
-    </a>
-   
-    <form action="/admin/delete/<%= post._id %>" method="post">
-      <input hidden name="_csrf" value="<%= csrfToken %>" />
-      <button type="submit" class="btn">
-        <i class="fa-solid fa-trash-can icon"></i>Delete
+    <div>
+      <a href="/admin/edit/<%= post._id %>" class="post-title">
+        <button class="btn">
+          <i class="fa-solid fa-pen-to-square fa-rotate-180 icon"></i>Edit
+        </button>
+      </a>
+
+      <div class="post-title">
+        <form action="/admin/delete/<%= post._id %>" method="post">
+          <input hidden name="_csrf" value="<%= csrfToken %>" />
+          <button type="submit" class="btn">
+            <i class="fa-solid fa-trash-can icon"></i>Delete
+          </button>
+        </form>
+      </div>
+      <%}%> <% if(post.userId._id.toString() === currentLoginUserId.toString())
+      {%>
+    </div>
+
+    <a href="/save/<%= post._id%>">
+      <button class="btn">
+        <i class="fa-solid fa-file-arrow-down icon"></i>
+        Save to Device
       </button>
-    </form>
+    </a>
+
+    <%}%>
   </div>
-  <%}%>
+
   <p class="des"><%= post.description%></p>
+  <hr />
   <img src="<%= '/'+ post.imgUrl %>" alt="<%= post.title %>" />
 
-  <% if(post.userId._id.toString() === currentLoginUserId.toString()) {%>
-  <div class="buttons">   
-    <a href="/save/<%= post._id%>" class="btn"><i class="fa-solid fa-file-arrow-down icon"></i>Save to Device</a>   
-  </div>
-  <%}%>
   <hr />
 </section>
 

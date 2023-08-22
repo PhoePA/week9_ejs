@@ -38,7 +38,6 @@ exports.createPost = (req, res, next) => {
   // log files
   // console.log(req.file);
   const image = req.file;
-  console.log("I am image info" + image);
 
   // validation with express-validation
   const errors = validationResult(req);
@@ -61,7 +60,7 @@ exports.createPost = (req, res, next) => {
     });
   }
 
-  console.log(image.path);
+  // console.log(image.path);
   //create data using mongoose
   Post.create({ title, description, imgUrl: image.path, userId: req.user })
     .then((result) => {
@@ -127,8 +126,6 @@ exports.renderHomePage = (req, res, next) => {
     })
     .then((posts) => {
       if (posts.length > 0) {
-        console.log(req.session.userInfo._id);
-        console.log(posts[0].userId._id);
         return res.render("home", {
           title: "Home Page",
           postsArray: posts,
@@ -164,7 +161,6 @@ exports.getPost = (req, res, next) => {
   Post.findById(postId)
     .populate("userId", "email") // find data from mongoosedb
     .then((post) => {
-      console.log(post);
       res.render("details", {
         title: post.title,
         post,

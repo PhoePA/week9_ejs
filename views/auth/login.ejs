@@ -18,17 +18,6 @@
       </li>
       <%}%>
       <li>
-        <label for="username">Enter Username</label>
-      </li>
-      <li>
-        <input
-          type="text"
-          id="username"
-          name="username"
-          value="<%= oldFormData.username%>"
-        />
-      </li>
-      <li>
         <label for="email">Enter Email</label>
       </li>
       <li>
@@ -51,15 +40,14 @@
         />
       </li>
       <div class="buttons">
-        <a href="#">
-          <button type="submit" class="btn">
-            <i class="fa-solid fa-right-to-bracket icon"></i>Log in
-          </button>
-        </a>
-
         <a href="/reset-password">
           <button type="button" class="btn">
             <i class="fa-solid fa-unlock icon"></i>Forget Password
+          </button>
+        </a>
+        <a href="#">
+          <button type="submit" class="btn">
+            <i class="fa-solid fa-right-to-bracket icon"></i>Log in
           </button>
         </a>
       </div>
