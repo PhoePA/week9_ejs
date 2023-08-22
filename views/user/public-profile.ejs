@@ -1,32 +1,15 @@
 <%- include("../includes/head.ejs")%>
 <section>
   <div>
-    <div class="buttons">
-      <div>
-        <a href="/admin/create-post" class="badge">
-          <button class="btn">
-            <i class="fa-solid fa-plus icon"></i>Create a new post now
-          </button></a
-        >
-      </div>
-      <div>
-        <div class="badge">
-          <i class="user fa-solid fa-circle-user fa-beat"></i>
-        </div>
-        <div class="badge"><%= currentUserEmail %></div>
-        <div class="badge">
-          <%= postsArray[0].userId.username? postsArray[0].userId.username : " "
-          %>
-        </div>
-      </div>
-      <div>
-        <a href="/admin/premium" class="badge"
-          ><button class="btn">Buy IO Premium</button></a
-        >
-      </div>
+    <div class="badge">
+      <i class="user fa-solid fa-circle-user fa-beat"></i>
+    </div>
+    <div class="badge"><%= currentUserEmail %></div>
+    <div class="badge">
+      <%= postsArray[0].userId.username? postsArray[0].userId.username:"" %>
     </div>
   </div>
-  
+
   <div class="post-container">
     <% for(let post of postsArray) { %>
     <div class="post-box">
@@ -49,11 +32,17 @@
   <hr />
   <div class="buttons">
     <%if(hasNextPage){%>
-    <a href="/admin/profile/?page=<%= nextPage%>" class="btn">
+    <a
+      href="/profile/<%= postsArray[0].userId._id %>?page=<%= nextPage%>"
+      class="btn"
+    >
       Next Page <%= nextPage%>
     </a>
     <%}%> <%if(hasPreviousPage){%>
-    <a href="/admin/profile/?page=<%= previousPage%>" class="btn">
+    <a
+      href="/profile/<%= postsArray[0].userId._id %>?page=<%= previousPage%>"
+      class="btn"
+    >
       Previous Page <%= previousPage%>
     </a>
     <%}%>

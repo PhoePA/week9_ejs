@@ -65,7 +65,6 @@ exports.createPost = (req, res, next) => {
   //create data using mongoose
   Post.create({ title, description, imgUrl: image.path, userId: req.user })
     .then((result) => {
-      console.log(result);
       res.redirect("/");
     })
     .catch((err) => {
@@ -128,6 +127,8 @@ exports.renderHomePage = (req, res, next) => {
     })
     .then((posts) => {
       if (posts.length > 0) {
+        console.log(req.session.userInfo._id);
+        console.log(posts[0].userId._id);
         return res.render("home", {
           title: "Home Page",
           postsArray: posts,
@@ -139,10 +140,11 @@ exports.renderHomePage = (req, res, next) => {
           previousPage: pageNumber - 1,
           hasNextPage: postPerPage * pageNumber < totalPostNumber,
           hasPreviousPage: pageNumber > 1,
+          currentUserID: req.session.userInfo ? req.session.userInfo._id : "",
         });
       } else {
         return res.status(500).render("error/500", {
-          title: "Error 404 ",
+          title: "Error 500 ",
           message: "No Post In this Page!",
         });
       }
@@ -162,7 +164,7 @@ exports.getPost = (req, res, next) => {
   Post.findById(postId)
     .populate("userId", "email") // find data from mongoosedb
     .then((post) => {
-      // console.log(post);
+      console.log(post);
       res.render("details", {
         title: post.title,
         post,
@@ -218,6 +220,8 @@ exports.updatePost = (req, res, next) => {
 
   const image = req.file;
   const errors = validationResult(req);
+
+  // image validation when update post
   // if (image === undefined) {
   //   return res.status(422).render("editPost", {
   //     postId,
@@ -247,7 +251,7 @@ exports.updatePost = (req, res, next) => {
         fileDelete(post.imgUrl);
         post.imgUrl = image.path;
       }
-      return post.save().then((result) => {
+      return post.save().then(() => {
         console.log("Post updated");
         res.redirect("/");
       });

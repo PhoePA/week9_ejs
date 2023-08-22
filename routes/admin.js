@@ -48,6 +48,8 @@ router.post(
 router.post("/delete/:postId", postController.deletePost);
 
 // get profile
-router.get("/profile",userController.getProfile)
+router.get("/profile", userController.getProfile);
+
+router.get("/premium", userController.renderPremiumPage);
 
 module.exports = router;

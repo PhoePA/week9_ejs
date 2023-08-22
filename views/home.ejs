@@ -2,23 +2,20 @@
 
 <div class="body">
   <h1 class="title">Posts</h1>
-   <% if(isLogin){ %>
-        <div class="buttons">         
-            <a href="./admin/create-post">
-              <button class="btn btn-postlink">
-                <i class="fa-solid fa-plus icon"></i> Add a new post as <%=
-                currentUserEmail ? currentUserEmail : "" %>
-              </button>
-            </a>        
-        </div>
-        <%}%>
-
-  <% if(postsArray.length===0 && isLogin) { %>
+  <% if(isLogin){ %>
+  <div class="buttons">
+    <a href="/admin/create-post">
+      <button class="btn">
+        <i class="fa-solid fa-plus icon"></i> Add a new post as <%=
+        currentUserEmail ? currentUserEmail : "" %>
+      </button>
+    </a>
+  </div>
+  <%}%> <% if(postsArray.length===0 && isLogin) { %>
   <div>
     <h3 class="title">
-      There is Nothing to see HERE!<i
-        class="fa-regular fa-face-frown-open icon err"
-      ></i>
+      Nothing to see HERE!
+      <i class="fa-regular fa-face-frown-open icon err"> </i>
     </h3>
     <a href="/admin/create-post">
       <button class="btn">
@@ -32,18 +29,29 @@
     <% for(let post of postsArray) { %>
     <div class="post-box">
       <div class="post-img">
-        <img src="<%= post.imgUrl %>" alt="<%= post.title %>" />
+        <img src="<%= '/' + post.imgUrl %>" alt="<%= post.title %>" />
       </div>
       <div class="buttons">
-        <h3 class=" post-title"><%= post.title.substr(0,15) %></h3>
-        <a class="btn " href="./post/<%= post._id %>">Read More</a>
+        <h3 class="post-title"><%= post.title.substr(0,15) %>...</h3>
+        <a class="btn" href="/post/<%= post._id %>">Read More</a>
       </div>
       <div class="des des-text">
         <p><%= post.description.substr(0,200) %>...</p>
       </div>
-      <div>
-        <h3 class="credit">Posted by <%= post.userId.email %></h3>
-      </div>
+      <hr />
+
+      <% if(post.userId._id.toString() === currentUserID.toString()){%>
+      <h3 class="credit">
+        Posted by
+        <a href="/admin/profile"><%= post.userId.email %></a>
+      </h3>
+      <%}else{%>
+      <h3 class="credit">
+        Posted by
+        <a href="/profile/<%= post.userId._id %>"><%= post.userId.email %> </a>
+      </h3>
+
+      <%}%>
     </div>
     <% } %>
   </div>
