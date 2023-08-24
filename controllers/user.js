@@ -1,4 +1,5 @@
 const Post = require("../models/post");
+const User = require("../models/user");
 const stripe = require("stripe")(
   "sk_test_51NhpGSClSmTc4DNoWaqHvooFdLTAmglFht7zXXxUtTApOvvdsAF3mULg5BWFXcmwwaclSw0nQ6Rd8OpDkBBH5HIA00PJs2xcaw"
 );
