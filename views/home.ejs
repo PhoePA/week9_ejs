@@ -11,6 +11,7 @@
       </button>
     </a>
   </div>
+  <hr />
   <%}%> <% if(postsArray.length===0 && isLogin) { %>
   <div>
     <h3 class="title">
@@ -50,7 +51,6 @@
         Posted by
         <a href="/profile/<%= post.userId._id %>"><%= post.userId.email %> </a>
       </h3>
-
       <%}%>
     </div>
     <% } %>

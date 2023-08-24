@@ -1,18 +1,32 @@
 <%- include("../includes/head.ejs")%>
 <section>
-  <div class="premium">
+  <div class="premium feedback">
     <h1 class="">
-      <i class="fa-solid fa-medal fa-beat-fade medal icon"></i> IO Premium
+      <i
+        class="fa-solid fa-medal fa-beat-fade medal animate__animated animate__slower 3s icon"
+      ></i>
+      IO Premium
+      <hr />
     </h1>
-    <hr />
+
     <ul class="facts">
       <li>Can Save Posts as PDF File</li>
       <li>Animate Profile Badge</li>
       <li>Can Create Posts Unlimitedly</li>
     </ul>
-    <p class="btn post-title">
-      <i class="fa-solid fa-money-bill-wave icon"></i>Buy Premium
-    </p>
+    <button class="btn feedbtn checkout-btn">Buy IO Premium</button>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+      var stripe = Stripe(
+        "pk_test_51NhpGSClSmTc4DNoiZYM2DzOb2f8uSqeyMrtn7pTIIfPvGdHQBvfS2WwcDlErSrD9BFH0zY77xykEPjVKq3uEBzj00vdIfRrX7"
+      );
+      var checkoutBtn = document.querySelector(".checkout-btn");
+      checkoutBtn.addEventListener("click", function () {
+        stripe.redirectToCheckout({ 
+          sessionId: "<%= session_id %>"
+         });
+      });
+    </script>
   </div>
 </section>
 <%- include("../includes/foot.ejs")%>

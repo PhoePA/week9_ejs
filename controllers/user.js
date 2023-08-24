@@ -1,5 +1,7 @@
 const Post = require("../models/post");
-
+const stripe = require("stripe")(
+  "sk_test_51NhpGSClSmTc4DNoWaqHvooFdLTAmglFht7zXXxUtTApOvvdsAF3mULg5BWFXcmwwaclSw0nQ6Rd8OpDkBBH5HIA00PJs2xcaw"
+);
 const postPerPage = 5;
 
 exports.getProfile = (req, res, next) => {
@@ -15,7 +17,7 @@ exports.getProfile = (req, res, next) => {
 
       // Post.getPosts() // read data from pure  mongodb
       return Post.find({ userId: req.user._id })
-        .populate("userId", "email username")
+        .populate("userId", "email username isPremium")
         .skip((pageNumber - 1) * postPerPage)
         .limit(postPerPage)
         .sort({ createdAt: -1 }); // read data from mongosedb and sort
@@ -64,7 +66,7 @@ exports.getPublicProfile = (req, res, next) => {
 
       // Post.getPosts() // read data from pure  mongodb
       return Post.find({ userId: id })
-        .populate("userId", "email")
+        .populate("userId", "email isPremium username")
         .skip((pageNumber - 1) * postPerPage)
         .limit(postPerPage)
         .sort({ createdAt: -1 }); // read data from mongosedb and sort
@@ -97,6 +99,59 @@ exports.getPublicProfile = (req, res, next) => {
     });
 };
 
-exports.renderPremiumPage = (req, res) => {
-  res.render("user/premium", { title: "premium" });
+exports.renderPremiumPage = (req, res, next) => {
+  stripe.checkout.sessions
+    .create({
+      payment_method_types: ["card"],
+      line_items: [
+        {
+          price: "price_1Ni6vzClSmTc4DNoBPTlLpjx",
+          quantity: 1,
+        },
+      ],
+      mode: "subscription",
+      success_url: `${req.protocol}://${req.get(
+        "host"
+      )}/admin/subscription-success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${req.protocol}://${req.get(
+        "host"
+      )}/admin/subscription-cancel`,
+    })
+    .then((stripe_session) => {
+      res.render("user/premium", {
+        title: "Buy Premium",
+        session_id: stripe_session.id,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      const error = new Error("Something Went Wrong!");
+      return next(error);
+    });
+};
+
+exports.getSubscriptionSuccessPage = (req, res, next) => {
+  const session_id = req.query.session_id;
+
+  if (!session_id) {
+    return res.redirect("/admin/profile");
+  }
+
+  User.findById(req.user._id)
+    .then((user) => {
+      user.isPremium = true;
+      user.payment_session_key = session_id;
+      return user.save();
+    })
+    .then((_) => {
+      res.render("user/subscription-success", {
+        title: "Subscription Success!",
+        subscription_id: session_id,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      const error = new Error("Something Went Wrong!");
+      return next(error);
+    });
 };

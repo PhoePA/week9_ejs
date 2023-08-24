@@ -174,7 +174,7 @@ textarea, .reset {
 }
 
 .credit {
-  width: fit-contnent;
+  width: fit-content;
   padding: 3px;
   margin: 0 auto;
   text-align: center;
@@ -218,13 +218,12 @@ img {
 .feedbtn {
   display: flex;
   margin: 10px auto;
-  padding: 10px;
-  justify-content: center ;
+  justify-content: center;
 }
 
 .premium{
   border: 5px solid black;
-  width: 30%;
+  width: 50%;
   margin: 10rem auto auto auto;
   padding: 5px;
   text-align: center;
@@ -232,8 +231,9 @@ img {
 }
 
 .medal{
-  font-size: 20px;
+  font-size: 25px;
 }
+
 .facts{ 
   width: 100%;
   font-size: 20px;
@@ -243,5 +243,5 @@ img {
 .facts > li{
   list-style: square;
   float: left;
-  margin:0 5px 5px 20px;  
+  margin:8px 25px;  
 }
