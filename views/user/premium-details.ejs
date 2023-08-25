@@ -1,0 +1,23 @@
+<%- include("../includes/head.ejs")%>
+<section>
+  <div>
+    <h1 class="title feedbtn">
+      <i
+        class="fa-solid fa-medal fa-beat-fade medal animate__animated animate__slower 3s icon"
+      ></i
+      >Premium Details!
+    </h1>
+    <hr />
+
+    <ul>
+      <li>Customer ID - <span><%=customer_id%></span></li>
+      <li>Name - <span> <%=name%></span></li>
+      <li>Email - <span><%=email%></span></li>
+      <li>Country - <span><%=country%></span></li>
+      <li>Postal Code - <span><%=postal_code%></span></li>
+      <li>Invoice ID - <span><%=invoice_id%></span></li>
+      <li>Payment Status - <span class="payment-status"> <%=status%></span></li>
+    </ul>
+  </div>
+</section>
+<%- include("../includes/foot.ejs")%>

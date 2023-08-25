@@ -4,7 +4,7 @@ const { log } = require("console");
 const router = express.Router();
 
 const postController = require("../controllers/post");
-const userController = require("../controllers/user")
+const userController = require("../controllers/user");
 
 const { body } = require("express-validator");
 
@@ -17,7 +17,7 @@ router.post(
     body("title")
       .isLength({ min: 10 })
       .withMessage("Title must have 10 letters."),
-      // .trim(),
+    // .trim(),
     // body("photo").isURL().withMessage("Image must be a valid Url."),
     // body("photo").isMimeType("image"),
     body("description")
@@ -53,5 +53,12 @@ router.get("/profile", userController.getProfile);
 router.get("/premium", userController.renderPremiumPage);
 
 router.get("/subscription-success", userController.getSubscriptionSuccessPage);
+
+router.get("/subscription-cancel", userController.renderPremiumPage);
+
+router.get("/premium-details", userController.getPremiumDetails);
+
+
+
 
 module.exports = router;

@@ -21,9 +21,6 @@
       <p><%= postsArray[0].userId.username %></p>
       <%}%>
     </div>
-    <!-- <div class="badge">
-      <%= postsArray[0].userId.username? postsArray[0].userId.username:"" %>
-    </div> -->
   </div>
   <hr />
   <div class="post-container">
@@ -40,9 +37,6 @@
         <p><%= post.description.substr(0,200) %>...</p>
       </div>
       <hr />
-      <div>
-        <h3 class="credit">Posted by <%= post.userId.email %></h3>
-      </div>
     </div>
     <% } %>
   </div>

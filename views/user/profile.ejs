@@ -19,8 +19,8 @@
         <div class="badge">
           <%if(postsArray[0].userId.username){%>
           <p>
-            <%= postsArray[0].userId.username %> 
-            <% if(postsArray[0].userId.isPremium){ %>
+            <%= postsArray[0].userId.username %> <%
+            if(postsArray[0].userId.isPremium){ %>
             <i
               class="fa-regular fa-star animate__animated animate__jello animate__infinite infinite"
             ></i>
@@ -32,9 +32,15 @@
         </div>
       </div>
       <div>
+        <%if(postsArray[0].userId.isPremium){%>
+        <a href="/admin/premium-details" class="badge"
+          ><button class="btn">IO Premium Status</button></a
+        >
+        <%}else{%>
         <a href="/admin/premium" class="badge"
           ><button class="btn">Buy IO Premium</button></a
         >
+        <%}%>
       </div>
     </div>
   </div>
@@ -53,9 +59,6 @@
         <p><%= post.description.substr(0,200) %>...</p>
       </div>
       <hr />
-      <div>
-        <h3 class="credit">Posted by <%= post.userId.email %></h3>
-      </div>
     </div>
     <% } %>
   </div>

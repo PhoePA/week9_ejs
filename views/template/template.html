@@ -17,6 +17,10 @@
     <p>Author => {{post.userId.email}}</p>
     <p>Uploaded at {{post.createdAt}}</p>
     <p style="font-family: 'Poppins', sans-serif">{{ post.description}}</p>
-    <img src="http://localhost:8080/{{ post.imgUrl }}" alt="{{post.title }}" />
+    <img
+      src="http://localhost:8080/{{ post.imgUrl }}"
+      alt="{{post.title }}"
+      style="width: 75%; object-fit: cover; border-radius: 8px"
+    />
   </body>
 </html>

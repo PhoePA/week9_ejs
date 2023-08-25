@@ -20,8 +20,8 @@
     <%}%>
   </div>
 
-  <% if(post.userId._id.toString() === currentLoginUserId.toString()) {%>
   <div class="buttons">
+    <% if(post.userId._id.toString() === currentLoginUserId.toString()) {%>
     <div>
       <a href="/admin/edit/<%= post._id %>" class="post-title">
         <button class="btn">
@@ -37,18 +37,15 @@
           </button>
         </form>
       </div>
-      <%}%> <% if(post.userId._id.toString() === currentLoginUserId.toString())
-      {%>
     </div>
 
+    <%}%> <%if(currentLoginUserStatus){%>
     <a href="/save/<%= post._id%>">
       <button class="btn">
         <i class="fa-solid fa-file-arrow-down icon"></i>
         Save to Device
-      </button>
-    </a>
-
-    <%}%>
+      </button> </a
+    ><%}%>
   </div>
 
   <p class="des"><%= post.description%></p>

@@ -119,7 +119,7 @@ exports.renderHomePage = (req, res, next) => {
       // Post.getPosts() // read data from pure  mongodb
       return Post.find()
         .select("title imgUrl description")
-        .populate("userId", "email")
+        .populate("userId", "email isPremium username")
         .skip((pageNumber - 1) * postPerPage)
         .limit(postPerPage)
         .sort({ createdAt: -1 }); // read data from mongosedb and sort
@@ -159,7 +159,7 @@ exports.getPost = (req, res, next) => {
   const postId = req.params.postId;
   // Post.getPost(postId) // get data from pure mongodb
   Post.findById(postId)
-    .populate("userId", "email") // find data from mongoosedb
+    .populate("userId", "email isPremium") // find data from mongoosedb
     .then((post) => {
       res.render("details", {
         title: post.title,
@@ -169,6 +169,9 @@ exports.getPost = (req, res, next) => {
           : "",
         currentLoginUserId: req.session.userInfo
           ? req.session.userInfo._id
+          : "",
+        currentLoginUserStatus: req.session.userInfo
+          ? req.session.userInfo.isPremium
           : "",
       });
     })
