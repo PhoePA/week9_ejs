@@ -47,17 +47,37 @@
           <% if(post.userId._id.toString() === currentUserID.toString()){%>
 
           <a href="/admin/profile">
+            <%if(post.userId.profile_imgUrl && post.userId.isPremium){%>
+
+            <img
+              src="<%= '/'+ post.userId.profile_imgUrl %>"
+              alt="<%= post.userId.username %>"
+              class="profile-img home-img"
+            />
+
+            <%}else{%>
             <i
-              class="fa-solid fa-circle-user fa-beat animate__animated animate__slower 3s"
-            ></i
-          ></a>
+              class="medal fa-solid fa-circle-user fa-beat animate__animated animate__slower 3s"
+            ></i>
+            <%}%>
+          </a>
 
           <%}else{%>
 
           <a href="/profile/<%= post.userId._id %>">
+            <%if(post.userId.profile_imgUrl && post.userId.isPremium){%>
+
+            <img
+              src="<%= '/'+ post.userId.profile_imgUrl %>"
+              alt="<%= post.userId.username %>"
+              class="profile-img home-img"
+            />
+
+            <%}else{%>
             <i
-              class="fa-solid fa-circle-user fa-beat animate__animated animate__slower 3s"
+              class="medal fa-solid fa-circle-user fa-beat animate__animated animate__slower 3s"
             ></i>
+            <%}%>
           </a>
 
           <%}%>

@@ -1,3 +1,4 @@
+const { validationResult } = require("express-validator");
 const Post = require("../models/post");
 const User = require("../models/user");
 const stripe = require("stripe")(
@@ -18,13 +19,18 @@ exports.getProfile = (req, res, next) => {
 
       // Post.getPosts() // read data from pure  mongodb
       return Post.find({ userId: req.user._id })
-        .populate("userId", "email username isPremium")
+        .populate("userId", "email username isPremium profile_imgUrl")
         .skip((pageNumber - 1) * postPerPage)
         .limit(postPerPage)
         .sort({ createdAt: -1 }); // read data from mongosedb and sort
     })
     .then((posts) => {
-      if (posts.length > 0) {
+      if (!posts.length > 0 && pageNumber > 1) {
+        return res.status(500).render("error/500", {
+          title: "Error 500 ",
+          message: "No Post In this Page!",
+        });
+      } else {
         return res.render("user/profile", {
           title: req.session.userInfo.email,
           postsArray: posts,
@@ -36,11 +42,6 @@ exports.getProfile = (req, res, next) => {
           currentUserEmail: req.session.userInfo
             ? req.session.userInfo.email
             : "",
-        });
-      } else {
-        return res.status(500).render("error/500", {
-          title: "Error 500 ",
-          message: "No Post In this Page!",
         });
       }
     })
@@ -67,7 +68,7 @@ exports.getPublicProfile = (req, res, next) => {
 
       // Post.getPosts() // read data from pure  mongodb
       return Post.find({ userId: id })
-        .populate("userId", "email isPremium username")
+        .populate("userId", "email isPremium username profile_imgUrl")
         .skip((pageNumber - 1) * postPerPage)
         .limit(postPerPage)
         .sort({ createdAt: -1 }); // read data from mongosedb and sort
@@ -172,6 +173,46 @@ exports.getPremiumDetails = (req, res, next) => {
         invoice_id: stripe_session.invoice,
         status: stripe_session.payment_status,
       });
+    })
+    .catch((err) => {
+      console.log(err);
+      const error = new Error("Something Went Wrong!");
+      return next(error);
+    });
+};
+
+exports.getProfileUploadPage = (req, res) => {
+  res.render("user/profile-upload", { title: "Profile Image", errorMsg: "" });
+};
+
+exports.setProfileImage = (req, res) => {
+  const photo = req.file;
+
+  const errors = validationResult(req);
+
+  // mimetype for image validation
+  if (photo === undefined) {
+    return res.status(422).render("user/profile-upload", {
+      title: "Profile Image",
+      errorMsg: "Please upload valid Image format like JPG, JPEG and PNG!",
+    });
+  }
+
+  // title & description validation
+  if (!errors.isEmpty()) {
+    return res.status(422).render("user/profile-upload", {
+      title: "Profile Image",
+      errorMsg: errors.array()[0].msg,
+    });
+  }
+
+  User.findById(req.user._id)
+    .then((user) => {
+      user.profile_imgUrl = photo.path;
+      return user.save();
+    })
+    .then((_) => {
+      res.redirect("/admin/profile");
     })
     .catch((err) => {
       console.log(err);

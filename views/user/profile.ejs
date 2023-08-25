@@ -1,4 +1,4 @@
-<%- include("../includes/head.ejs")%>
+<%- include("../includes/head.ejs")%> <%if(postsArray.length > 0){%>
 <section>
   <div>
     <div class="buttons">
@@ -11,9 +11,20 @@
       </div>
       <div>
         <div class="badge">
+          <%if(postsArray[0].userId.profile_imgUrl &&
+          postsArray[0].userId.isPremium){%>
+          <div>
+            <img
+              src="<%= '/'+ postsArray[0].userId.profile_imgUrl %>"
+              alt="<%= postsArray[0].userId.username %>"
+              class="profile-img"
+            />
+          </div>
+          <%}else{%>
           <i
             class="user fa-solid fa-circle-user fa-beat animate__animated animate__slower 3s"
           ></i>
+          <%}%>
         </div>
         <div class="badge"><%= currentUserEmail %></div>
         <div class="badge">
@@ -31,16 +42,26 @@
           <%}%>
         </div>
       </div>
-      <div>
-        <%if(postsArray[0].userId.isPremium){%>
-        <a href="/admin/premium-details" class="badge"
-          ><button class="btn">IO Premium Status</button></a
-        >
-        <%}else{%>
-        <a href="/admin/premium" class="badge"
-          ><button class="btn">Buy IO Premium</button></a
-        >
-        <%}%>
+      <div class="feedback">
+        <!-- <div>
+          <a href="/admin/profile-image">
+            <button class="btn">Upload Profile Image</button></a
+          >
+        </div> -->
+        <div>
+          <%if(postsArray[0].userId.isPremium){%>
+          <a href="/admin/premium-details">
+            <button class="btn">IO Premium Status</button></a
+          >
+          <a href="/admin/profile-image">
+            <button class="btn">Upload Profile Image</button></a
+          >
+          <%}else{%>
+          <a href="/admin/premium">
+            <button class="btn">Buy IO Premium</button></a
+          >
+          <%}%>
+        </div>
       </div>
     </div>
   </div>
@@ -75,4 +96,19 @@
     <%}%>
   </div>
 </section>
-<%- include("../includes/foot.ejs")%>
+<%}else{%>
+<section>
+  <div>
+    <h3 class="title">
+      No Post Yet in Your Profile!
+      <i class="fa-regular fa-face-frown-open icon err"> </i>
+    </h3>
+    <a href="/admin/create-post">
+      <button class="btn">
+        <i class="fa-solid fa-plus icon"></i>Create a New Post Now
+      </button></a
+    >
+  </div>
+  <hr />
+</section>
+<%}%> <%- include("../includes/foot.ejs")%>

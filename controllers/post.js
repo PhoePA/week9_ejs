@@ -119,7 +119,7 @@ exports.renderHomePage = (req, res, next) => {
       // Post.getPosts() // read data from pure  mongodb
       return Post.find()
         .select("title imgUrl description")
-        .populate("userId", "email isPremium username")
+        .populate("userId", "email isPremium username profile_imgUrl")
         .skip((pageNumber - 1) * postPerPage)
         .limit(postPerPage)
         .sort({ createdAt: -1 }); // read data from mongosedb and sort

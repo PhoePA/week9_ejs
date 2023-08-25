@@ -2,9 +2,20 @@
 <section>
   <div>
     <div class="badge">
+      <%if(postsArray[0].userId.profile_imgUrl &&
+      postsArray[0].userId.isPremium){%>
+      <div>
+        <img
+          src="<%= '/'+ postsArray[0].userId.profile_imgUrl %>"
+          alt="<%= postsArray[0].userId.username %>"
+          class="profile-img"
+        />
+      </div>
+      <%}else{%>
       <i
         class="user fa-solid fa-circle-user fa-beat animate__animated animate__slower 3s"
       ></i>
+      <%}%>
     </div>
     <div class="badge"><%= currentUserEmail %></div>
     <div class="badge">

@@ -1,0 +1,39 @@
+<%- include("../includes/head.ejs")%>
+<section>
+  <h1 class="title home">Upload Profile</h1>
+  <div>
+    <a href="/admin/profile">
+      <p class="btn btn-home">
+        <i class="fa-solid fa-arrow-left icon"></i>Back to Profile
+      </p>
+    </a>
+  </div>
+  <form action="/admin/set-profile" method="post" enctype="multipart/form-data">
+    <input hidden name="_csrf" value="<%= csrfToken %>" />
+    <div class="form-box">
+      <ul>
+        <% if(errorMsg){%>
+        <li>
+          <p class="errMsg"><%=errorMsg%></p>
+        </li>
+        <%}%>
+        <li>
+          <label for="photo">Upload Image</label>
+        </li>
+        <li>
+          <input type="file" id="photo" name="photo" />
+        </li>
+        <li class="buttons">
+          <a href="/" class="btn">
+            <i class="fa-solid fa-xmark icon"></i>Cancel
+          </a>
+          <button class="btn">
+            <i class="fa-solid fa-images fa-bounce animate__animated icon"></i
+            >Upload Profile
+          </button>
+        </li>
+      </ul>
+    </div>
+  </form>
+</section>
+<%- include("../includes/foot.ejs")%>

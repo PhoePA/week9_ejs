@@ -8,6 +8,8 @@ const userController = require("../controllers/user");
 
 const { body } = require("express-validator");
 
+const {isPremium} = require("../middleware/is-premium")
+
 // admin/create-post
 router.get("/create-post", postController.renderCreatePage);
 
@@ -58,7 +60,8 @@ router.get("/subscription-cancel", userController.renderPremiumPage);
 
 router.get("/premium-details", userController.getPremiumDetails);
 
+router.get("/profile-image", isPremium, userController.getProfileUploadPage);
 
-
+router.post("/set-profile", isPremium, userController.setProfileImage);
 
 module.exports = router;
