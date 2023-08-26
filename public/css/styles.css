@@ -37,7 +37,6 @@ nav{
 }
 
 .des {
-  text-align: center;
   margin: 7px 10px;
   text-align: justify;
   text-indent: 10%;
@@ -122,7 +121,19 @@ textarea, .reset {
 
 .btn-home {
   padding: 3px;
-  margin-left:15%;
+  margin:2% 1% 2% 75%;
+}
+
+.right{
+  display: inline-block;
+  margin: 10px 10px 20px 10px;
+  float: right;
+}
+
+.left{
+   display: inline-block;
+  margin: 10px 10px 20px 10px;
+  float: left;
 }
 
 .post-container {
@@ -133,7 +144,6 @@ textarea, .reset {
 }
 
 .post-container > .post-box {
-
   flex:  auto;
   margin: 8px;
   padding: 8px;
@@ -203,6 +213,11 @@ img {
   margin: 10px auto;
   justify-content: center;
 }
+.r-btn{
+  display: flex;
+  justify-content: end;
+  margin: 5px 3px;
+}
 
 .premium{
   border: 5px solid black;
@@ -241,13 +256,21 @@ img {
   text-align:center;
   margin: 3px 5px;
 }
+.p-facts{
+  width: 450px;
+  font-size: 20px;
+  margin: 15px auto;
+  padding: 10px;
+  border: 1px dashed #c96547; 
+  border-radius: 8px;
+}
 
 li > span{
-font-weight: 700;
+font-weight: 800;
 }
 
 .payment-status{
-  background-color: green;
+  background-color: #2feb99;
   border-radius: 3px;
   padding: 4px;
 }

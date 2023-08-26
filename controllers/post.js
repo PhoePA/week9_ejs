@@ -8,7 +8,7 @@ const expressPath = require("path");
 const fileDelete = require("../utils/fileDelete");
 const { log } = require("console");
 
-const postPerPage = 5;
+const postPerPage = 4;
 
 exports.createPost = (req, res, next) => {
   const { title, description } = req.body;
@@ -125,7 +125,12 @@ exports.renderHomePage = (req, res, next) => {
         .sort({ createdAt: -1 }); // read data from mongosedb and sort
     })
     .then((posts) => {
-      if (posts.length > 0) {
+      if (!posts.length > 0 && pageNumber > 1) {
+        return res.status(500).render("error/500", {
+          title: "Error 500 ",
+          message: "No Post In this Page!",
+        });
+      } else {
         return res.render("home", {
           title: "Home Page",
           postsArray: posts,
@@ -138,11 +143,6 @@ exports.renderHomePage = (req, res, next) => {
           hasNextPage: postPerPage * pageNumber < totalPostNumber,
           hasPreviousPage: pageNumber > 1,
           currentUserID: req.session.userInfo ? req.session.userInfo._id : "",
-        });
-      } else {
-        return res.status(500).render("error/500", {
-          title: "Error 500 ",
-          message: "No Post In this Page!",
         });
       }
     })

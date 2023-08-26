@@ -1,69 +1,73 @@
 <%- include("../includes/head.ejs")%> <%if(postsArray.length > 0){%>
 <section>
   <div>
-    <div class="buttons">
-      <div>
-        <a href="/admin/create-post" class="badge">
-          <button class="btn">
-            <i class="fa-solid fa-plus icon"></i>Create a new post now
-          </button></a
-        >
+    <div>
+      <div class="badge">
+        <%if(postsArray[0].userId.profile_imgUrl &&
+        postsArray[0].userId.isPremium){%>
+        <div>
+          <img
+            src="<%= '/'+ postsArray[0].userId.profile_imgUrl %>"
+            alt="<%= postsArray[0].userId.username %>"
+            class="profile-img"
+          />
+        </div>
+        <%}else{%>
+        <i
+          class="user fa-solid fa-circle-user fa-beat animate__animated animate__slower 3s"
+        ></i>
+        <%}%>
       </div>
-      <div>
-        <div class="badge">
-          <%if(postsArray[0].userId.profile_imgUrl &&
-          postsArray[0].userId.isPremium){%>
-          <div>
-            <img
-              src="<%= '/'+ postsArray[0].userId.profile_imgUrl %>"
-              alt="<%= postsArray[0].userId.username %>"
-              class="profile-img"
-            />
-          </div>
-          <%}else{%>
+      <div class="badge"><%= currentUserEmail %></div>
+      <div class="badge">
+        <%if(postsArray[0].userId.username){%>
+        <p>
+          <%= postsArray[0].userId.username %> <%
+          if(postsArray[0].userId.isPremium){ %>
           <i
-            class="user fa-solid fa-circle-user fa-beat animate__animated animate__slower 3s"
+            class="fa-regular fa-star animate__animated animate__jello animate__infinite infinite"
           ></i>
           <%}%>
-        </div>
-        <div class="badge"><%= currentUserEmail %></div>
-        <div class="badge">
-          <%if(postsArray[0].userId.username){%>
-          <p>
-            <%= postsArray[0].userId.username %> <%
-            if(postsArray[0].userId.isPremium){ %>
-            <i
-              class="fa-regular fa-star animate__animated animate__jello animate__infinite infinite"
-            ></i>
-            <%}%>
-          </p>
-          <%}else{%>
-          <p><%= postsArray[0].userId.username %></p>
-          <%}%>
-        </div>
+        </p>
+        <%}else{%>
+        <p><%= postsArray[0].userId.username %></p>
+        <%}%>
       </div>
-      <div class="feedback">
-        <!-- <div>
-          <a href="/admin/profile-image">
-            <button class="btn">Upload Profile Image</button></a
-          >
-        </div> -->
-        <div>
-          <%if(postsArray[0].userId.isPremium){%>
+      <div>
+        <%if(postsArray[0].userId.isPremium){%>
+        <div class="feedbtn">
           <a href="/admin/premium-details">
-            <button class="btn">IO Premium Status</button></a
+            <button class="btn">
+              <i class="fa-solid fa-id-card icon"></i>IO Premium Status
+            </button></a
           >
           <a href="/admin/profile-image">
-            <button class="btn">Upload Profile Image</button></a
-          >
-          <%}else{%>
-          <a href="/admin/premium">
-            <button class="btn">Buy IO Premium</button></a
-          >
-          <%}%>
+            <button class="btn">
+              <i class="fa-solid fa-file-image icon"></i>Update Profile
+            </button>
+          </a>
         </div>
+        <%}else{%>
+        <div class="feedbtn">
+          <a href="/admin/premium">
+            <button class="btn">Buy IO Premium</button>
+          </a>
+          <!-- <a href="/admin/profile-image">
+            <button class="btn">
+              <i class="fa-solid fa-file-image icon"></i>Upload Profile
+            </button>
+          </a> -->
+        </div>
+        <%}%>
       </div>
     </div>
+  </div>
+  <div class="r-btn">
+    <a href="/admin/create-post">
+      <button class="btn">
+        <i class="fa-solid fa-plus icon"></i>Create a new post
+      </button>
+    </a>
   </div>
   <hr />
   <div class="post-container">
@@ -84,17 +88,16 @@
     <% } %>
   </div>
   <hr />
-  <div class="buttons">
-    <%if(hasNextPage){%>
-    <a href="/admin/profile/?page=<%= nextPage%>" class="btn">
-      Next Page <%= nextPage%>
-    </a>
-    <%}%> <%if(hasPreviousPage){%>
-    <a href="/admin/profile/?page=<%= previousPage%>" class="btn">
-      Previous Page <%= previousPage%>
-    </a>
-    <%}%>
-  </div>
+
+  <%if(hasPreviousPage){%>
+  <a href="/admin/profile/?page=<%= previousPage%>" class="btn left">
+    Previous Page <%= previousPage%>
+  </a>
+  <%}%> <%if(hasNextPage){%>
+  <a href="/admin/profile/?page=<%= nextPage%>" class="btn right">
+    Next Page <%= nextPage%>
+  </a>
+  <%}%>
 </section>
 <%}else{%>
 <section>
